@@ -24,10 +24,10 @@
 .cecp-easter-wrap *{box-sizing:border-box}
 .cecp-easter-shell{background:transparent;border-radius:0;padding:0}
 
-/* Hero：顶部无圆角贴满，底部有圆角 */
 .cecp-easter-hero{
   position:relative;overflow:hidden;
-  border-radius:0 0 28px 28px;
+  border-radius:28px;
+  margin:20px 20px 0;
   padding:42px 28px 36px;
   background:radial-gradient(circle at 82% 18%,rgba(255,232,198,.92) 0%,rgba(255,232,198,.14) 16%,transparent 33%),
              linear-gradient(135deg,var(--hero1) 0%,var(--hero2) 100%);
@@ -102,7 +102,7 @@
 
 @media(max-width:920px){.cecp-easter-grid,.cecp-welcome{grid-template-columns:1fr}}
 @media(max-width:640px){
-  .cecp-easter-hero{padding:32px 18px 28px;border-radius:0 0 20px 20px}
+  .cecp-easter-hero{padding:32px 18px 28px;border-radius:20px;margin:12px 12px 0}
   .cecp-welcome{padding:0 12px}
   .cecp-easter-grid{padding:0 12px}
   .cecp-bottom-cards{padding:0 12px}
