@@ -2,37 +2,35 @@
   /* ============================================================
      cecp-easter.js · 2026 复活节培灵聚会组件
      在 Halo HTML 编辑块里粘贴以下一行即可：
-     <script src="https://你的用户名.github.io/你的仓库/文件名字.js"></script>
+     <script src="https://你的用户名.github.io/cecp-easter/cecp-easter.js"></script>
      ============================================================ */
 
   /* ---------- 样式 ---------- */
   var CSS = `
 .cecp-easter-wrap{
-  --bg:#f6f3ee;--card:#ffffff;--card-soft:#fbf8f3;--text:#2b241d;
-  --muted:#786d62;--line:rgba(91,72,50,.12);--gold:#b98644;
-  --gold-soft:#f3e1cb;--tag:#f4ece3;
-  --shadow:0 14px 34px rgba(48,34,20,.08);--radius:24px;
-  --link:#8d5e2d;--hero1:#2d2117;--hero2:#6b5035;
+  --bg:transparent;
+  --card:rgba(255,255,255,0.07);
+  --card-soft:rgba(255,255,255,0.04);
+  --text:inherit;
+  --muted:rgba(128,128,128,0.85);
+  --line:rgba(128,128,128,0.15);
+  --gold:#c49a4a;
+  --gold-soft:rgba(196,154,74,.18);
+  --tag:rgba(128,128,128,0.10);
+  --shadow:0 8px 24px rgba(0,0,0,.10);
+  --radius:24px;
+  --link:#c49a4a;
+  --hero1:#2d2117;--hero2:#6b5035;
   --heroText:#fff8f1;--heroMuted:rgba(255,248,241,.84);
-  max-width:100%;margin:0;padding:0;
-  color:var(--text);
+  width:100%;margin:0;padding:0;
+  color:inherit;
   font-family:"Noto Serif SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",serif;
   line-height:1.75;box-sizing:border-box;
 }
 .cecp-easter-wrap *{box-sizing:border-box}
-@media(prefers-color-scheme:dark){
-  .cecp-easter-wrap{
-    --bg:#151312;--card:#1d1a17;--card-soft:#221e1b;--text:#f4ede3;
-    --muted:#c1b3a4;--line:rgba(255,241,224,.10);--gold:#d1a261;
-    --gold-soft:rgba(209,162,97,.14);--tag:#2a241f;
-    --shadow:0 16px 42px rgba(0,0,0,.28);--link:#e3b06a;
-    --hero1:#1d1713;--hero2:#4f3a27;--heroText:#fff7ed;
-    --heroMuted:rgba(255,247,237,.82);
-  }
-}
-.cecp-easter-shell{background:var(--bg);border-radius:0;padding:20px}
+.cecp-easter-shell{background:transparent;border-radius:0;padding:0}
 .cecp-easter-hero{
-  position:relative;overflow:hidden;border-radius:30px;padding:42px 28px 26px;
+  position:relative;overflow:hidden;border-radius:0;padding:42px 28px 26px;
   background:radial-gradient(circle at 82% 18%,rgba(255,232,198,.92) 0%,rgba(255,232,198,.14) 16%,transparent 33%),
              linear-gradient(135deg,var(--hero1) 0%,var(--hero2) 100%);
   color:var(--heroText);box-shadow:var(--shadow);
@@ -49,11 +47,11 @@
   border-radius:14px;background:rgba(255,255,255,.10);
   border:1px solid rgba(255,255,255,.16);font-size:14px;color:var(--heroText);text-decoration:none
 }
-.cecp-welcome{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.cecp-welcome{margin-top:20px;display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:0 20px}
 .cecp-text-block{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
 .cecp-text-block h3{margin:0 0 10px;font-size:22px;color:var(--gold)}
 .cecp-text-block p{margin:0;color:var(--text);font-size:15px}
-.cecp-easter-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:22px}
+.cecp-easter-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;margin-top:22px;padding:0 20px}
 .cecp-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
 .cecp-title{margin:0 0 10px;font-size:24px;line-height:1.3;font-weight:800;color:var(--gold)}
 .cecp-sub{margin:0;font-size:14px;color:var(--muted)}
@@ -96,7 +94,7 @@
   border:1px solid var(--line);font-size:17px;color:var(--text)
 }
 .cecp-verse strong{display:block;margin-top:8px;font-size:14px;color:var(--gold);letter-spacing:.04em}
-.cecp-bottom-cards{margin-top:22px;display:grid;grid-template-columns:1fr;gap:18px}
+.cecp-bottom-cards{margin-top:22px;margin-bottom:22px;display:grid;grid-template-columns:1fr;gap:18px;padding:0 20px}
 .cecp-softbox{border-radius:26px;padding:24px 22px;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--card)}
 .cecp-softbox h4{margin:0 0 14px;font-size:22px;color:var(--text);font-weight:800}
 .cecp-softbox p{margin:0;color:var(--muted);font-size:16px;line-height:1.8}
@@ -210,10 +208,10 @@
           <div class="cecp-mini-list">
             <div class="cecp-mini-item">
               <strong>聚会地址</strong>
-              <span><a class="cecp-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Via+Ugo+Foscolo+4+Padova">Via Ugo Foscolo 4, Padova</a></span>
+              <span><a class="cecp-link" target="_blank" rel="noopener" href="https://maps.app.goo.gl/gvzmgk1Wk76TKAQr6">Via Ugo Foscolo, 4, 35131 Padova PD</a></span>
               <div class="cecp-actions">
-                <a class="cecp-btn" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Via+Ugo+Foscolo+4+Padova">打开地图</a>
-                <button class="cecp-btn" type="button" data-cecp-copy="Via Ugo Foscolo 4, Padova" data-cecp-msg="已复制地址">复制地址</button>
+                <a class="cecp-btn" target="_blank" rel="noopener" href="https://maps.app.goo.gl/gvzmgk1Wk76TKAQr6">打开地图</a>
+                <button class="cecp-btn" type="button" data-cecp-copy="Via Ugo Foscolo, 4, 35131 Padova PD" data-cecp-msg="已复制地址">复制地址</button>
                 <span class="cecp-copy-tip"></span>
               </div>
             </div>
