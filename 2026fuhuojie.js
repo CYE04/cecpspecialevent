@@ -1,8 +1,8 @@
 (function () {
   /* ============================================================
-     2026fuhuojie.js · 2026 复活节培灵聚会组件
+     cecp-easter.js · 2026 复活节培灵聚会组件
      在 Halo HTML 编辑块里粘贴以下一行即可：
-     <script src="https://你的用户名.github.io/你的仓库/文件名.js"></script>
+     <script src="https://你的用户名.github.io/cecp-easter/cecp-easter.js"></script>
      ============================================================ */
 
   /* ---------- 样式 ---------- */
@@ -104,8 +104,10 @@
 
 @media(max-width:920px){.cecp-easter-grid,.cecp-welcome{grid-template-columns:1fr}}
 @media(max-width:640px){
-  .cecp-easter-shell{padding:12px;border-radius:24px}
-  .cecp-easter-hero{padding:32px 18px 22px;border-radius:22px}
+  .cecp-easter-hero{padding:32px 18px 22px}
+  .cecp-welcome{padding:0 12px}
+  .cecp-easter-grid{padding:0 12px}
+  .cecp-bottom-cards{padding:0 12px}
   .cecp-card,.cecp-text-block,.cecp-softbox{padding:18px;border-radius:18px}
   .cecp-title{font-size:21px}
   .cecp-day-head{flex-direction:column;align-items:flex-start}
