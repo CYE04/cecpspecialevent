@@ -1,10 +1,4 @@
 (function () {
-  /* ============================================================
-     cecp-easter.js · 2026 复活节培灵聚会组件
-     在 Halo HTML 编辑块里粘贴以下一行即可：
-     <script src="https://你的用户名.github.io/你的仓库/文件名.js"></script>
-     ============================================================ */
-
   /* ---------- 样式 ---------- */
   var CSS = `
 .cecp-easter-wrap{
@@ -29,8 +23,12 @@
 }
 .cecp-easter-wrap *{box-sizing:border-box}
 .cecp-easter-shell{background:transparent;border-radius:0;padding:0}
+
+/* Hero：顶部无圆角贴满，底部有圆角 */
 .cecp-easter-hero{
-  position:relative;overflow:hidden;border-radius:0;padding:42px 28px 26px;
+  position:relative;overflow:hidden;
+  border-radius:0 0 28px 28px;
+  padding:42px 28px 36px;
   background:radial-gradient(circle at 82% 18%,rgba(255,232,198,.92) 0%,rgba(255,232,198,.14) 16%,transparent 33%),
              linear-gradient(135deg,var(--hero1) 0%,var(--hero2) 100%);
   color:var(--heroText);box-shadow:var(--shadow);
@@ -104,7 +102,7 @@
 
 @media(max-width:920px){.cecp-easter-grid,.cecp-welcome{grid-template-columns:1fr}}
 @media(max-width:640px){
-  .cecp-easter-hero{padding:32px 18px 22px}
+  .cecp-easter-hero{padding:32px 18px 28px;border-radius:0 0 20px 20px}
   .cecp-welcome{padding:0 12px}
   .cecp-easter-grid{padding:0 12px}
   .cecp-bottom-cards{padding:0 12px}
@@ -268,7 +266,6 @@
       </div>
     </div>
 
-
   </div>
 </section>
 `;
@@ -281,7 +278,7 @@
     document.head.appendChild(style);
   }
 
-  /* ---------- 注入 HTML（插入到 script 标签位置） ---------- */
+  /* ---------- 注入 HTML ---------- */
   var scripts = document.getElementsByTagName('script');
   var thisScript = scripts[scripts.length - 1];
   var wrapper = document.createElement('div');
