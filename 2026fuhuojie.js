@@ -100,19 +100,52 @@
 .cecp-green{background:linear-gradient(135deg,rgba(90,125,78,.20),rgba(90,125,78,.08))}
 .cecp-blue{background:linear-gradient(135deg,rgba(80,110,140,.20),rgba(80,110,140,.08))}
 
-@media(max-width:920px){.cecp-easter-grid,.cecp-welcome{grid-template-columns:1fr}}
-@media(max-width:640px){
-  .cecp-easter-hero{padding:32px 18px 28px;border-radius:20px;margin:12px 12px 0}
-  .cecp-welcome{padding:0 12px}
-  .cecp-easter-grid{padding:0 12px}
-  .cecp-bottom-cards{padding:0 12px}
-  .cecp-card,.cecp-text-block,.cecp-softbox{padding:18px;border-radius:18px}
-  .cecp-title{font-size:21px}
-  .cecp-day-head{flex-direction:column;align-items:flex-start}
-  .cecp-row{grid-template-columns:1fr;gap:4px}
+/* 平板横屏 ≤1024px：右栏稍窄 */
+@media(max-width:1024px){
+  .cecp-easter-grid{grid-template-columns:1fr 1fr}
+}
+
+/* 平板竖屏 ≤768px：全部单列 */
+@media(max-width:768px){
+  .cecp-easter-grid,.cecp-welcome{grid-template-columns:1fr}
+  .cecp-easter-hero{padding:36px 22px 30px;border-radius:22px;margin:16px 16px 0}
+  .cecp-welcome{padding:0 16px;margin-top:16px}
+  .cecp-easter-grid{padding:0 16px;margin-top:16px}
+  .cecp-bottom-cards{padding:0 16px;margin-top:16px}
+  .cecp-card,.cecp-text-block,.cecp-softbox{padding:20px;border-radius:20px}
+  .cecp-title{font-size:22px}
+  .cecp-day-head h3{font-size:20px}
   .cecp-time,.cecp-item{font-size:17px}
-  .cecp-softbox h4{font-size:20px}
-  .cecp-softbox p{font-size:15px}
+}
+
+/* 手机 ≤480px：紧凑布局 */
+@media(max-width:480px){
+  .cecp-easter-hero{padding:28px 16px 24px;border-radius:18px;margin:12px 12px 0}
+  .cecp-welcome{padding:0 12px;margin-top:12px;gap:12px}
+  .cecp-easter-grid{padding:0 12px;margin-top:12px;gap:12px}
+  .cecp-bottom-cards{padding:0 12px;margin-top:12px;margin-bottom:16px;gap:12px}
+  .cecp-card,.cecp-text-block,.cecp-softbox{padding:16px;border-radius:16px}
+  .cecp-title{font-size:20px}
+  .cecp-sub{font-size:13px}
+  .cecp-day-head{flex-direction:column;align-items:flex-start;gap:6px}
+  .cecp-day-head h3{font-size:18px}
+  .cecp-day-badge{font-size:12px}
+  .cecp-row{grid-template-columns:1fr;gap:2px;padding:10px 0}
+  .cecp-time{font-size:13px;color:var(--muted);font-weight:600}
+  .cecp-item{font-size:16px}
+  .cecp-list{padding:8px 14px 14px}
+  .cecp-mini-item{padding:12px 14px}
+  .cecp-sermon{padding:12px 14px}
+  .cecp-actions{gap:8px}
+  .cecp-btn{padding:8px 12px;font-size:13px}
+  .cecp-verse{padding:16px;font-size:15px}
+  .cecp-softbox{padding:18px 16px}
+  .cecp-softbox h4{font-size:18px;margin-bottom:10px}
+  .cecp-softbox p{font-size:14px}
+  .cecp-easter-pill{padding:8px 12px;font-size:13px}
+  .cecp-easter-meta{gap:8px;margin-top:16px}
+  .cecp-text-block h3{font-size:18px}
+  .cecp-text-block p{font-size:14px}
 }
 `;
 
