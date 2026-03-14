@@ -2,7 +2,7 @@
   /* ============================================================
      cecp-easter.js · 2026 复活节培灵聚会组件
      在 Halo HTML 编辑块里粘贴以下一行即可：
-     <script src="https://你的用户名.github.io/你的仓库/文件名.js"></script>
+     <script src="https://你的用户名.github.io/cecp-easter/cecp-easter.js"></script>
      ============================================================ */
 
   /* ---------- 样式 ---------- */
@@ -14,7 +14,7 @@
   --shadow:0 14px 34px rgba(48,34,20,.08);--radius:24px;
   --link:#8d5e2d;--hero1:#2d2117;--hero2:#6b5035;
   --heroText:#fff8f1;--heroMuted:rgba(255,248,241,.84);
-  max-width:1100px;margin:32px auto;padding:0 18px;
+  max-width:100%;margin:0;padding:0;
   color:var(--text);
   font-family:"Noto Serif SC","PingFang SC","Hiragino Sans GB","Microsoft YaHei",serif;
   line-height:1.75;box-sizing:border-box;
@@ -30,7 +30,7 @@
     --heroMuted:rgba(255,247,237,.82);
   }
 }
-.cecp-easter-shell{background:var(--bg);border-radius:32px;padding:20px}
+.cecp-easter-shell{background:var(--bg);border-radius:0;padding:20px}
 .cecp-easter-hero{
   position:relative;overflow:hidden;border-radius:30px;padding:42px 28px 26px;
   background:radial-gradient(circle at 82% 18%,rgba(255,232,198,.92) 0%,rgba(255,232,198,.14) 16%,transparent 33%),
@@ -103,7 +103,7 @@
 .cecp-peach{background:linear-gradient(135deg,rgba(185,134,68,.18),rgba(185,134,68,.08))}
 .cecp-green{background:linear-gradient(135deg,rgba(90,125,78,.20),rgba(90,125,78,.08))}
 .cecp-blue{background:linear-gradient(135deg,rgba(80,110,140,.20),rgba(80,110,140,.08))}
-.cecp-footer{margin-top:18px;text-align:center;color:var(--muted);font-size:14px}
+
 @media(max-width:920px){.cecp-easter-grid,.cecp-welcome{grid-template-columns:1fr}}
 @media(max-width:640px){
   .cecp-easter-shell{padding:12px;border-radius:24px}
@@ -267,6 +267,8 @@
         <p>教会每个主日提供爱心午餐及晚餐。<br>午餐时间：13:30—14:10<br>晚餐时间：19:00—19:40</p>
       </div>
     </div>
+
+
   </div>
 </section>
 `;
