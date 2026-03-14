@@ -267,8 +267,6 @@
         <p>教会每个主日提供爱心午餐及晚餐。<br>午餐时间：13:30—14:10<br>晚餐时间：19:00—19:40</p>
       </div>
     </div>
-
-    <div class="cecp-footer">基督教帕多瓦华人教会 · Comunità Cristiana Evangelica Cinese Di Padova</div>
   </div>
 </section>
 `;
