@@ -165,7 +165,7 @@
     '<div class="cecp-accordion-meta"><span class="cecp-accordion-badge">09:30\u201317:00</span><span class="cecp-accordion-arrow">\u25bc</span></div>',
     '</div>',
     '<div class="cecp-accordion-body"><div class="cecp-list">',
-    row('4月6日','早餐','09:30 开始','早餐'),
+    row('4月6日','早餐','09:30','开始'),
     row('4月6日','祷告会','10:30\u201311:20','祷告会'),
     row('4月6日','诗歌敬拜祷告','11:20\u201311:50','诗歌敬拜祷告'),
     row('4月6日｜证道一','证道一','11:50\u201312:50','证道一\u2003得蒙怜悯，胜过审判（创 18:20\u201333）'),
