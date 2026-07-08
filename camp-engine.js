@@ -126,6 +126,11 @@ window.CampEngine = {};
   .pdc-page *{animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
 .pdc-page{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--pdc-ink);line-height:1.65;max-width:1020px;margin:0 auto;padding:8px 4px 56px;font-size:clamp(14px,.3vw + 13px,16px)}
+/* 手机上从博客文章容器「破容器」满宽显示，不被两侧 padding 吃掉空间 */
+@media(max-width:720px){
+  .pdc-page{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:8px 10px 48px}
+  .pdc-hero{padding:36px 16px 28px;border-radius:20px}
+}
 .pdc-hr{border:none;border-top:1px solid var(--pdc-border);margin:38px 0}
 
 /* ── Hero ── */
@@ -283,6 +288,8 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 }
 /* 诗歌谱图 / 灯箱：youth 灯箱 z-index(999999) 低于本弹窗，强制抬到最上层 */
 #ym-lb-overlay{z-index:2147483400!important}
+/* 和弦浏览器底部面板（<chord-explorer> 的 :host 默认 2147482000）同样抬到弹窗之上 */
+chord-explorer{z-index:2147483350!important}
 #pdc-modal .sw-score img{max-width:100%;height:auto;cursor:zoom-in}
 
 /* ── Detail (sermon / worship) ── */
@@ -352,9 +359,10 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     _overlay.addEventListener('click', closeModal);
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape' || !_modal.classList.contains('open')) return;
-      /* 若灯箱开着，Esc 先关灯箱（youth 自己处理），弹窗不动 */
+      /* 若灯箱 / 和弦面板开着，Esc 先关它们（youth 自己处理），弹窗不动 */
       var lb = document.getElementById('ym-lb-overlay');
       if (lb && lb.classList.contains('open')) return;
+      if (document.querySelector('chord-explorer.open')) return;
       closeModal();
     });
   }
