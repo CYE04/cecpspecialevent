@@ -1,27 +1,31 @@
 /**
- * camp-engine.js v1.1
+ * camp-engine.js v1.2
  * CECP 读经营 / 特会渲染引擎
- * 托管于 GitHub Pages，所有营会帖子共用
+ * 托管仓库：cecpspecialevent（GitHub Pages），所有营会帖子共用
  *
  * 使用方式：
  *   <div id="pdc-root"></div>
- *   <script src="https://cye04.github.io/Cecp/camp-engine.js"></script>
+ *   <script src="https://cye04.github.io/cecpspecialevent/camp-engine.js"></script>
  *   <script>CampEngine.render('PDDuJingYing2026', document.getElementById('pdc-root'));</script>
  *
- * 数据文件：camp/<id>.json（引擎与数据分离，办下一届只需新增一个 JSON）。
- * 诗歌渲染：完全复用 youth-engine.js 暴露的 YouthEngine.buildSongSet(songIds)，
+ * 数据文件：camp/<id>.json（与本文件同仓库；引擎与数据分离，办下一届只需新增一个 JSON）。
+ * 诗歌渲染：完全复用 Cecp 仓库 youth-engine.js 暴露的 YouthEngine.buildSongSet(songIds)，
  *           本文件不包含任何和弦谱 / 播放器 / chord-engine 实现。
+ *           youth-engine.js 与 songs/*.json 始终从 Cecp 仓库（PDC_YE_SRC / YM_BASE）加载，
  *           若页面未引入 youth-engine.js，会在首次打开敬拜详情时自动动态加载。
  */
 
-/* ══════════ 基础路径（优先随本脚本所在域，回退 GitHub Pages）══════════ */
+/* ══════════ 基础路径 ══════════ */
+/* camp 数据：随本脚本所在域（本地测试用本地数据），回退 cecpspecialevent 的 GitHub Pages */
 var PDC_BASE = (function () {
   try {
     var cur = document.currentScript && document.currentScript.src ? new URL(document.currentScript.src, location.href) : null;
     if (cur) return cur.href.replace(/\/[^\/]*$/, '');
   } catch (_) {}
-  return 'https://cye04.github.io/Cecp';
+  return 'https://cye04.github.io/cecpspecialevent';
 })();
+/* 诗歌渲染引擎：固定在 Cecp 仓库（歌库 songs/ 也在那里，由 youth-engine 内部的 YM_BASE 决定） */
+var PDC_YE_SRC = 'https://cye04.github.io/Cecp/youth-engine.js';
 
 window.CampEngine = {};
 
@@ -60,7 +64,7 @@ window.CampEngine = {};
     if (_yePromise) return _yePromise;
     _yePromise = new Promise(function (resolve, reject) {
       var s = document.createElement('script');
-      s.src = PDC_BASE + '/youth-engine.js';
+      s.src = PDC_YE_SRC;
       s.onload = function () {
         if (window.YouthEngine && typeof window.YouthEngine.buildSongSet === 'function') resolve();
         else reject(new Error('youth-engine.js 已加载，但未找到 buildSongSet API'));
@@ -143,8 +147,9 @@ window.CampEngine = {};
 .pdc-hero-intro{color:var(--pdc-ink2);max-width:660px;margin:0 auto 24px;text-align:justify;text-align-last:center;line-height:1.9}
 .pdc-pills{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
 .pdc-pill{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:999px;background:var(--pdc-glass);border:1px solid var(--pdc-border-md);font-size:.9em;font-weight:650;box-shadow:var(--pdc-sh);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.pdc-info{margin:18px auto 0;max-width:560px;text-align:left;border:1px dashed var(--pdc-border-md);border-radius:14px;padding:10px 16px;font-size:.9em;color:var(--pdc-ink2)}
+.pdc-info{margin:18px auto 0;max-width:620px;text-align:left;border:1px dashed var(--pdc-border-md);border-radius:14px;padding:12px 18px;font-size:.9em;color:var(--pdc-ink2)}
 .pdc-info b{color:var(--pdc-ink)}
+.pdc-info>div{margin:7px 0;line-height:1.8}
 
 /* ── Section title ── */
 .pdc-sec-title{font-family:var(--pdc-serif);font-size:1.35em;font-weight:800;margin:0 0 6px;display:flex;align-items:center;gap:9px}
@@ -164,6 +169,8 @@ window.CampEngine = {};
 .pdc-tt-item.is-sermon .e{color:var(--pdc-brand)}
 .pdc-tt-item.is-worship{background:var(--pdc-gold-soft);border-color:var(--pdc-gold-ln)}
 .pdc-tt-item.is-worship .e{color:var(--pdc-gold)}
+.pdc-tt-item.is-groups{background:var(--pdc-mint-soft);border-color:var(--pdc-mint)}
+.pdc-tt-item.is-groups .e{color:var(--pdc-mint)}
 button.pdc-tt-item{cursor:pointer;transition:transform .14s ease,box-shadow .14s ease}
 button.pdc-tt-item:hover{transform:translateY(-1px);box-shadow:var(--pdc-sh)}
 .pdc-tt-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:10px;font-size:.82em;color:var(--pdc-ink2)}
@@ -171,7 +178,32 @@ button.pdc-tt-item:hover{transform:translateY(-1px);box-shadow:var(--pdc-sh)}
 .pdc-tt-legend i{width:11px;height:11px;border-radius:4px;display:inline-block}
 .pdc-tt-legend .lg-sermon i{background:var(--pdc-brand-soft);border:1px solid var(--pdc-brand-ln)}
 .pdc-tt-legend .lg-worship i{background:var(--pdc-gold-soft);border:1px solid var(--pdc-gold-ln)}
+.pdc-tt-legend .lg-groups i{background:var(--pdc-mint-soft);border:1px solid var(--pdc-mint)}
 .pdc-tt-legend .lg-plain i{background:var(--pdc-soft);border:1px solid var(--pdc-border)}
+.pdc-tt-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+.pdc-zoom-btn{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:.88em;font-weight:700;color:var(--pdc-brand);background:var(--pdc-brand-soft);border:1px solid var(--pdc-brand-ln);border-radius:999px;padding:7px 16px;cursor:pointer;transition:transform .12s,filter .15s}
+.pdc-zoom-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+
+/* ── 时间表放大查看器 ── */
+.pdc-zoom{display:flex;flex-direction:column;height:100%;min-height:0}
+.pdc-zoom-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:0 0 12px}
+.pdc-zoom-tools button{font:inherit;font-size:.85em;font-weight:700;color:var(--pdc-ink);background:var(--pdc-card);border:1px solid var(--pdc-border-md);border-radius:999px;padding:6px 14px;cursor:pointer;transition:background .15s,transform .12s}
+.pdc-zoom-tools button:hover{background:var(--pdc-soft)}
+.pdc-zoom-tools button:active{transform:scale(.94)}
+.pdc-zoom-pct{font-size:.82em;color:var(--pdc-ink2);font-variant-numeric:tabular-nums;min-width:44px;text-align:center}
+.pdc-zoom-hint{font-size:.78em;color:var(--pdc-ink3);margin-left:auto}
+.pdc-zoom-area{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;border:1px solid var(--pdc-border);border-radius:16px;background:var(--pdc-soft)}
+.pdc-zoom-sizer{position:relative}
+.pdc-zoom-inner{position:absolute;left:0;top:0;transform-origin:0 0;padding:12px}
+.pdc-zoom-inner .pdc-tt{min-width:0}
+
+/* ── 分组名单 ── */
+.pdc-groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.pdc-group-card{background:var(--pdc-card);border:1px solid var(--pdc-border);border-radius:16px;padding:14px 16px;box-shadow:var(--pdc-sh)}
+.pdc-group-name{font-family:var(--pdc-serif);font-weight:900;font-size:1.05em;margin:0 0 8px;color:var(--pdc-mint)}
+.pdc-group-leader{display:inline-flex;align-items:center;gap:5px;font-size:.8em;font-weight:700;color:var(--pdc-mint);background:var(--pdc-mint-soft);border:1px solid var(--pdc-mint);border-radius:999px;padding:2px 10px;margin-bottom:9px}
+.pdc-group-members{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.pdc-group-members li{background:var(--pdc-soft);border:1px solid var(--pdc-border);border-radius:8px;padding:3px 10px;font-size:.88em}
 
 /* ── Day accordion ── */
 .pdc-day{background:var(--pdc-card);border:1px solid var(--pdc-border);border-radius:20px;box-shadow:var(--pdc-sh);margin-bottom:14px;overflow:hidden;transition:box-shadow .2s ease}
@@ -200,6 +232,8 @@ button.pdc-row:hover{background:var(--pdc-brand-soft)}
 button.pdc-row .pdc-row-event{color:var(--pdc-brand)}
 button.pdc-row[data-reftype="worship"]:hover{background:var(--pdc-gold-soft)}
 button.pdc-row[data-reftype="worship"] .pdc-row-event{color:var(--pdc-gold)}
+button.pdc-row[data-reftype="groups"]:hover{background:var(--pdc-mint-soft)}
+button.pdc-row[data-reftype="groups"] .pdc-row-event{color:var(--pdc-mint)}
 @media(max-width:520px){.pdc-row-time{width:90px;font-size:.8em}}
 
 /* ── Overview cards ── */
@@ -213,6 +247,15 @@ button.pdc-row[data-reftype="worship"] .pdc-row-event{color:var(--pdc-gold)}
 .pdc-card-title{font-weight:750;line-height:1.5;margin:0 0 4px}
 .pdc-card-sub{font-size:.85em;color:var(--pdc-ink2);margin:0}
 .pdc-card-meta{font-size:.8em;color:var(--pdc-ink3);margin-top:9px}
+/* 手机上总览卡片保持最少两列 */
+@media(max-width:600px){
+  .pdc-grid{grid-template-columns:1fr 1fr;gap:9px}
+  .pdc-card{padding:11px 11px;border-radius:14px}
+  .pdc-card-tag{font-size:.72em;padding:2px 9px;margin-bottom:7px}
+  .pdc-card-title{font-size:.88em;line-height:1.45}
+  .pdc-card-sub{font-size:.76em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .pdc-card-meta{font-size:.72em;margin-top:7px}
+}
 
 /* ── Modal ── */
 html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
@@ -346,6 +389,8 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     var meta = div('pdc-d-meta');
     meta.appendChild(el('span', { class: 'pdc-d-chip', text: '📖 ' + (s.label || '') }));
     if (s.day || s.time) meta.appendChild(el('span', { class: 'pdc-d-chip', text: '🗓 ' + [s.day, s.time].filter(Boolean).join(' · ') }));
+    var speaker = s.speaker || (C.info && C.info.speakers) || '';
+    if (speaker) meta.appendChild(el('span', { class: 'pdc-d-chip', text: '👤 ' + speaker }));
     wrap.appendChild(meta);
 
     wrap.appendChild(el('h3', { class: 'pdc-d-title', text: s.title || '' }));
@@ -435,6 +480,30 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     return wrap;
   }
 
+  /* ══════════════ 分组名单 ══════════════ */
+  function buildGroupsDetail() {
+    var wrap = div('');
+    var gs = C.groups || [];
+    if (!gs.length) {
+      wrap.appendChild(el('p', { class: 'pdc-songs-empty', text: '分组名单待公布 🙏' }));
+      return wrap;
+    }
+    var grid = div('pdc-groups-grid');
+    gs.forEach(function (g) {
+      var card = div('pdc-group-card');
+      card.appendChild(el('p', { class: 'pdc-group-name', text: g.name || '' }));
+      if (g.leader) card.appendChild(el('span', { class: 'pdc-group-leader', text: '👑 组长 · ' + g.leader }));
+      if (g.members && g.members.length) {
+        var ul = el('ul', { class: 'pdc-group-members' });
+        g.members.forEach(function (m) { ul.appendChild(el('li', { text: m })); });
+        card.appendChild(ul);
+      }
+      grid.appendChild(card);
+    });
+    wrap.appendChild(grid);
+    return wrap;
+  }
+
   /* ══════════════ ref 点击入口 ══════════════ */
   function openRef(ref) {
     if (!ref) return;
@@ -445,6 +514,8 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
       var w = findById(C.worship, ref.id);
       /* 敬拜用大弹窗：和弦谱/简谱图需要更大可视区域 */
       if (w) openModal((w.label || '敬拜') + ' · 诗歌敬拜', buildWorshipDetail(w), { wide: true });
+    } else if (ref.type === 'groups') {
+      openModal('📢 分组名单', buildGroupsDetail());
     }
   }
 
@@ -466,6 +537,7 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     var info = C.info || {};
     var infoRows = [
       ['👤 讲员', info.speakers],
+      ['📝 讲员简介', info.speakerBio],
       ['🏠 地址', info.address],
       ['🅿️ 停车', info.parking],
       ['📞 联系', info.contact]
@@ -482,24 +554,28 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
   }
 
   /* ══════════════ 整体时间表（四天一览）══════════════ */
-  function buildTimetable() {
-    var frag = document.createDocumentFragment();
-    frag.appendChild(el('h2', { class: 'pdc-sec-title', text: '⏱ 整体时间表' }));
-    frag.appendChild(el('p', { class: 'pdc-sec-cap', text: '四天日程一览 · 彩色块可点击查看详情' }));
+  function refTypeClass(ref) {
+    if (!ref) return '';
+    if (ref.type === 'sermon') return ' is-sermon';
+    if (ref.type === 'worship') return ' is-worship';
+    if (ref.type === 'groups') return ' is-groups';
+    return '';
+  }
 
-    var scroll = div('pdc-tt-scroll');
+  /* 生成四列时间表 grid；withReveal=false 用于放大查看器（无需滚动渐显） */
+  function buildTTGrid(withReveal) {
     var grid = div('pdc-tt');
     grid.style.gridTemplateColumns = 'repeat(' + Math.max((C.days || []).length, 1) + ',minmax(228px,1fr))';
-
     (C.days || []).forEach(function (day, di) {
-      var col = reveal(div('pdc-tt-col'), di);
+      var col = div('pdc-tt-col');
+      if (withReveal) reveal(col, di);
       col.appendChild(div('pdc-tt-head', [
         el('span', { class: 'pdc-tt-date', text: day.date || '' }),
         el('span', { class: 'pdc-tt-label', text: day.label || '' })
       ]));
       (day.schedule || []).forEach(function (item) {
         var ref = item.ref || null;
-        var cls = 'pdc-tt-item' + (ref ? (ref.type === 'sermon' ? ' is-sermon' : ' is-worship') : '');
+        var cls = 'pdc-tt-item' + refTypeClass(ref);
         var kids = [
           el('span', { class: 't', text: item.time || '' }),
           el('span', { class: 'e', text: (item.emoji ? item.emoji + ' ' : '') + (item.event || '') })
@@ -514,32 +590,109 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
       });
       grid.appendChild(col);
     });
+    return grid;
+  }
 
-    scroll.appendChild(grid);
+  /* 放大查看器：全屏弹窗 + 缩放控制，色块保持可点击 */
+  function openTimetableZoom() {
+    var content = div('pdc-zoom');
+    var tools = div('pdc-zoom-tools');
+    var area = div('pdc-zoom-area');
+    var sizer = div('pdc-zoom-sizer');
+    var inner = div('pdc-zoom-inner');
+    inner.appendChild(buildTTGrid(false));
+    sizer.appendChild(inner);
+    area.appendChild(sizer);
+
+    var scale = 1, baseW = 0, baseH = 0;
+    var pct = el('span', { class: 'pdc-zoom-pct', text: '100%' });
+    function apply() {
+      inner.style.transform = 'scale(' + scale + ')';
+      sizer.style.width = Math.ceil(baseW * scale) + 'px';
+      sizer.style.height = Math.ceil(baseH * scale) + 'px';
+      pct.textContent = Math.round(scale * 100) + '%';
+    }
+    function fit() {
+      if (!baseW) return;
+      scale = Math.max(0.25, Math.min(2.5, (area.clientWidth - 2) / baseW));
+      apply();
+    }
+    function mkBtn(label, fn) {
+      var b = el('button', { type: 'button', text: label });
+      b.addEventListener('click', fn);
+      return b;
+    }
+    tools.appendChild(mkBtn('适应宽度', fit));
+    tools.appendChild(mkBtn('－', function () { scale = Math.max(0.25, scale - 0.15); apply(); }));
+    tools.appendChild(pct);
+    tools.appendChild(mkBtn('＋', function () { scale = Math.min(2.5, scale + 0.15); apply(); }));
+    tools.appendChild(mkBtn('100%', function () { scale = 1; apply(); }));
+    tools.appendChild(el('span', { class: 'pdc-zoom-hint', text: '色块可点击查看详情' }));
+    content.appendChild(tools);
+    content.appendChild(area);
+    content.style.height = '100%';
+
+    openModal('⏱ 整体时间表 · 放大查看', content, { wide: true });
+
+    /* 布局完成后测量原始尺寸，默认适应宽度 */
+    requestAnimationFrame(function () {
+      baseW = inner.scrollWidth || 960;
+      baseH = inner.scrollHeight || 800;
+      fit();
+    });
+  }
+
+  function buildTimetable() {
+    var frag = document.createDocumentFragment();
+    frag.appendChild(el('h2', { class: 'pdc-sec-title', text: '⏱ 整体时间表' }));
+
+    var bar = div('pdc-tt-bar');
+    bar.appendChild(el('p', { class: 'pdc-sec-cap', style: 'margin:0', text: '四天日程一览 · 彩色块可点击查看详情' }));
+    var zoomBtn = el('button', { class: 'pdc-zoom-btn', type: 'button', text: '🔍 放大查看' });
+    zoomBtn.addEventListener('click', openTimetableZoom);
+    bar.appendChild(zoomBtn);
+    frag.appendChild(bar);
+
+    var scroll = div('pdc-tt-scroll');
+    scroll.appendChild(buildTTGrid(true));
     frag.appendChild(scroll);
 
     var legend = div('pdc-tt-legend');
     legend.innerHTML =
-      '<span class="lg-sermon"><i></i>讲道（可点开：主题 / 经文 / 讨论题 / PPT）</span>' +
-      '<span class="lg-worship"><i></i>敬拜（可点开：诗歌和弦谱 + 播放器）</span>' +
+      '<span class="lg-sermon"><i></i>讲道（主题 / 经文 / 讨论题 / PPT）</span>' +
+      '<span class="lg-worship"><i></i>敬拜（诗歌和弦谱 + 播放器）</span>' +
+      '<span class="lg-groups"><i></i>分组名单</span>' +
       '<span class="lg-plain"><i></i>用餐 / 休息 / 活动</span>';
     frag.appendChild(legend);
     return frag;
   }
 
   /* ══════════════ 日程（accordion，默认第一天展开）══════════════ */
+  /* ref → { clickable, sub }：日程行 / 总表共用 */
+  function describeRef(ref) {
+    if (!ref) return { clickable: false, sub: '' };
+    if (ref.type === 'sermon') {
+      var s = findById(C.sermons, ref.id);
+      return s ? { clickable: true, sub: s.title || '' } : { clickable: false, sub: '' };
+    }
+    if (ref.type === 'worship') {
+      var w = findById(C.worship, ref.id);
+      if (!w) return { clickable: false, sub: '' };
+      return { clickable: true, sub: (w.songs && w.songs.length) ? '共 ' + w.songs.length + ' 首诗歌 · 点击查看和弦谱' : '诗歌待定 · 点击查看' };
+    }
+    if (ref.type === 'groups') {
+      return { clickable: true, sub: (C.groups && C.groups.length) ? '点击查看分组名单' : '分组名单待公布 · 点击查看' };
+    }
+    return { clickable: false, sub: '' };
+  }
+
   function buildScheduleRow(item) {
     var ref = item.ref || null;
-    var target = ref ? (ref.type === 'sermon' ? findById(C.sermons, ref.id) : findById(C.worship, ref.id)) : null;
+    var d = describeRef(ref);
 
     var main = div('pdc-row-main');
     main.appendChild(el('span', { class: 'pdc-row-event', text: item.event || '' }));
-    if (target) {
-      var sub = ref.type === 'sermon'
-        ? (target.title || '')
-        : ((target.songs && target.songs.length) ? '共 ' + target.songs.length + ' 首诗歌 · 点击查看和弦谱' : '诗歌待定 · 点击查看');
-      if (sub) main.appendChild(el('span', { class: 'pdc-row-sub', text: sub }));
-    }
+    if (d.sub) main.appendChild(el('span', { class: 'pdc-row-sub', text: d.sub }));
 
     var kids = [
       el('span', { class: 'pdc-row-time', text: item.time || '' }),
@@ -547,7 +700,7 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
       main
     ];
 
-    if (target) {
+    if (d.clickable) {
       kids.push(el('span', { class: 'pdc-row-go', text: '›' }));
       var btn = el('button', { class: 'pdc-row', type: 'button', 'data-reftype': ref.type }, kids);
       btn.addEventListener('click', function () { openRef(ref); });

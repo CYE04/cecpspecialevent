@@ -6,17 +6,19 @@
   "location": "Padova",
   "church": "基督教帕多瓦华人教会",
   "info": {
-    "speakers": "",
+    "speakers": "顾约瑟牧师",
+    "speakerBio": "1985年清楚神的呼召就读神学，毕业于浙江神学院和金陵协和神学院。38年的神学教育和教会拓展事工，一直蒙神特别眷爱和使用，深受众信徒的爱戴。现退休后又蒙神特别带领在海外华人教会参与一些讲台服侍，享有圣灵同工的恩典，脚踪佳美。",
     "address": "",
     "parking": "",
     "contact": ""
   },
+  "groups": [],
   "days": [
     {
       "date": "3号",
       "label": "第一天",
       "schedule": [
-        {"time": "10:00 – 10:30", "event": "报告 分组 致词", "emoji": "📢"},
+        {"time": "10:00 – 10:30", "event": "报告 分组 致词", "emoji": "📢", "ref": {"type": "groups"}},
         {"time": "10:30 – 11:00", "event": "敬拜1", "emoji": "🎶", "ref": {"type": "worship", "id": "w1"}},
         {"time": "11:00 – 12:00", "event": "讲道1", "emoji": "📖", "ref": {"type": "sermon", "id": "s1"}},
         {"time": "12:00 – 13:00", "event": "午饭", "emoji": "🍚"},
@@ -294,7 +296,7 @@
     }
   ],
   "worship": [
-    {"id": "w1", "label": "敬拜1", "day": "3号", "time": "10:30 – 11:00", "songs": ["woxuanzexile", "womendeshen-zanmei", "woshenwowang"]},
+    {"id": "w1", "label": "敬拜1", "day": "3号", "time": "10:30 – 11:00", "songs": []},
     {"id": "w2", "label": "敬拜2", "day": "3号", "time": "13:30 – 14:00", "songs": []},
     {"id": "w3", "label": "敬拜3", "day": "4号", "time": "10:00 – 10:30", "songs": []},
     {"id": "w4", "label": "敬拜4", "day": "4号", "time": "13:30 – 14:00", "songs": []},
