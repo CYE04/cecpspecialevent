@@ -296,7 +296,7 @@
     }
   ],
   "worship": [
-    {"id": "w1", "label": "敬拜1", "day": "3号", "time": "10:30 – 11:00", "songs": []},
+    {"id": "w1", "label": "敬拜1", "day": "3号", "time": "10:30 – 11:00", "songs": ["woshenwowang"]},
     {"id": "w2", "label": "敬拜2", "day": "3号", "time": "13:30 – 14:00", "songs": []},
     {"id": "w3", "label": "敬拜3", "day": "4号", "time": "10:00 – 10:30", "songs": []},
     {"id": "w4", "label": "敬拜4", "day": "4号", "time": "13:30 – 14:00", "songs": []},
