@@ -126,11 +126,6 @@ window.CampEngine = {};
   .pdc-page *{animation-duration:.01ms!important;animation-iteration-count:1!important}
 }
 .pdc-page{font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--pdc-ink);line-height:1.65;max-width:1020px;margin:0 auto;padding:8px 4px 56px;font-size:clamp(14px,.3vw + 13px,16px)}
-/* 手机上从博客文章容器「破容器」满宽显示，不被两侧 padding 吃掉空间 */
-@media(max-width:720px){
-  .pdc-page{width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:8px 10px 48px}
-  .pdc-hero{padding:36px 16px 28px;border-radius:20px}
-}
 .pdc-hr{border:none;border-top:1px solid var(--pdc-border);margin:38px 0}
 
 /* ── Hero ── */
