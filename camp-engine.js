@@ -259,10 +259,10 @@ button.pdc-row[data-reftype="groups"] .pdc-row-event{color:var(--pdc-mint)}
 
 /* ── Modal ── */
 html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
-#pdc-overlay{position:fixed;inset:0;background:var(--pdc-bk);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:2147483000;display:none}
+#pdc-overlay{position:fixed;inset:0;background:var(--pdc-bk);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:999000;display:none}
 #pdc-overlay.open{display:block;animation:pdc-fade .22s ease}
 @keyframes pdc-fade{from{opacity:0}to{opacity:1}}
-#pdc-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(880px,calc(100vw - 20px));max-height:min(92vh,980px);background:var(--pdc-bg);color:var(--pdc-ink);border:1px solid var(--pdc-border-md);border-radius:24px;box-shadow:0 48px 140px rgba(0,0,0,.4);overflow:hidden;z-index:2147483001;display:none;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+#pdc-modal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(880px,calc(100vw - 20px));max-height:min(92vh,980px);background:var(--pdc-bg);color:var(--pdc-ink);border:1px solid var(--pdc-border-md);border-radius:24px;box-shadow:0 48px 140px rgba(0,0,0,.4);overflow:hidden;z-index:999001;display:none;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
 #pdc-modal.open{display:flex;flex-direction:column;animation:pdc-pop .3s cubic-bezier(.2,.8,.2,1)}
 @keyframes pdc-pop{from{opacity:0;transform:translate(-50%,-47.5%) scale(.965)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
 #pdc-modal.pdc-m-wide{width:min(1240px,calc(100vw - 16px));height:min(94vh,1200px);max-height:94vh}
@@ -281,11 +281,12 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
   .pdc-m-body{padding:14px 10px 30px}
   #pdc-modal.pdc-m-wide .pdc-m-body{padding:10px 6px 30px}
 }
-/* 诗歌谱图 / 灯箱：youth 灯箱 z-index(999999) 低于本弹窗，强制抬到最上层 */
-#ym-lb-overlay{z-index:2147483400!important}
-/* 和弦浏览器底部面板（<chord-explorer> 的 :host 默认 2147482000）同样抬到弹窗之上 */
-chord-explorer{z-index:2147483350!important}
+/* 层级策略：本弹窗压在 youth 全部查看器之下（灯箱 999999 / 谱图查看器 2147481000 /
+   和弦面板 2147482000），它们弹出时自然盖满全屏，行为和 youth 页面完全一致 */
 #pdc-modal .sw-score img{max-width:100%;height:auto;cursor:zoom-in}
+/* 谱图查看器默认永远黑底（--bg 未定义时回退 #0b0f16），浅色模式下深色谱文字会看不清；
+   让它跟随本页明暗主题 */
+#cecp-scorezoom{background:var(--pdc-bg)!important}
 
 /* ── Detail (sermon / worship) ── */
 .pdc-d-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
@@ -352,14 +353,16 @@ chord-explorer{z-index:2147483350!important}
 
     closeBtn.addEventListener('click', closeModal);
     _overlay.addEventListener('click', closeModal);
+    /* 捕获阶段监听：保证先于灯箱/和弦面板/谱图查看器的冒泡监听执行——
+       它们开着时 Esc 让它们自己关（本弹窗不动），与脚本加载顺序无关 */
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape' || !_modal.classList.contains('open')) return;
-      /* 若灯箱 / 和弦面板开着，Esc 先关它们（youth 自己处理），弹窗不动 */
       var lb = document.getElementById('ym-lb-overlay');
       if (lb && lb.classList.contains('open')) return;
       if (document.querySelector('chord-explorer.open')) return;
+      if (document.querySelector('#cecp-scorezoom.open')) return;
       closeModal();
-    });
+    }, true);
   }
 
   function openModal(title, contentEl, opts) {
