@@ -297,6 +297,15 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 .pdc-d-block-title{font-size:.83em;font-weight:800;color:var(--pdc-ink2);margin:0 0 9px;letter-spacing:.08em}
 .pdc-d-scripture{font-weight:650;margin:0}
 .pdc-keyverse{margin:0;padding:14px 18px;border-left:3px solid var(--pdc-gold);background:var(--pdc-gold-soft);border-radius:0 14px 14px 0;font-weight:650;line-height:1.85;font-family:var(--pdc-serif)}
+
+/* ── 背诵金句 ── */
+.pdc-verses{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px}
+@media(max-width:600px){.pdc-verses{grid-template-columns:1fr}}
+.pdc-verse-card{background:var(--pdc-card);border:1px solid var(--pdc-border);border-radius:18px;padding:16px 18px;box-shadow:var(--pdc-sh)}
+.pdc-verse-day{display:inline-flex;align-items:center;gap:6px;font-size:.8em;font-weight:700;color:var(--pdc-gold);background:var(--pdc-gold-soft);border:1px solid var(--pdc-gold-ln);border-radius:999px;padding:2px 11px;margin-bottom:10px}
+.pdc-verse-text{margin:0;padding:12px 16px;border-left:3px solid var(--pdc-gold);background:var(--pdc-gold-soft);border-radius:0 12px 12px 0;font-family:var(--pdc-serif);font-weight:650;line-height:1.9;white-space:pre-line}
+.pdc-verse-ref{margin:9px 2px 0;text-align:right;color:var(--pdc-ink2);font-size:.85em;font-weight:700}
+.pdc-verses-empty{color:var(--pdc-ink2);text-align:center;padding:26px 12px;border:1px dashed var(--pdc-border-md);border-radius:16px;margin:0}
 .pdc-questions{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:11px}
 .pdc-questions li{line-height:1.75}
 .pdc-questions li::marker{color:var(--pdc-brand);font-weight:800}
@@ -720,7 +729,7 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     frag.appendChild(el('h2', { class: 'pdc-sec-title', text: '🗓 每日详细日程' }));
     frag.appendChild(el('p', { class: 'pdc-sec-cap', text: '点击每天展开 · 讲道与敬拜条目可点开详情' }));
     (C.days || []).forEach(function (day, i) {
-      var card = reveal(div('pdc-day' + (i === 0 ? ' open' : '')), i);
+      var card = reveal(div('pdc-day'), i);
       var nRefs = (day.schedule || []).filter(function (it) { return it.ref; }).length;
       var head = el('button', { class: 'pdc-day-head', type: 'button' }, [
         el('span', { class: 'pdc-day-badge', text: day.date || '' }),
@@ -752,6 +761,28 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
       var when = [s.day, s.time].filter(Boolean).join(' · ');
       card.appendChild(el('p', { class: 'pdc-card-meta', text: when || '时间待定' }));
       card.addEventListener('click', function () { openRef({ type: 'sermon', id: s.id }); });
+      grid.appendChild(card);
+    });
+    frag.appendChild(grid);
+    return frag;
+  }
+
+  /* ══════════════ 背诵金句 ══════════════ */
+  function buildMemoryVerses() {
+    var frag = document.createDocumentFragment();
+    frag.appendChild(el('h2', { class: 'pdc-sec-title', text: '📜 背诵金句' }));
+    frag.appendChild(el('p', { class: 'pdc-sec-cap', text: '营会期间一起背诵的经文' }));
+    var list = C.memoryVerses || [];
+    if (!list.length) {
+      frag.appendChild(el('p', { class: 'pdc-verses-empty', text: '金句待公布 🙏' }));
+      return frag;
+    }
+    var grid = div('pdc-verses');
+    list.forEach(function (v, i) {
+      var card = reveal(div('pdc-verse-card'), i % 4);
+      if (v.label) card.appendChild(el('span', { class: 'pdc-verse-day', text: v.label }));
+      card.appendChild(el('blockquote', { class: 'pdc-verse-text', text: v.text || '' }));
+      if (v.ref) card.appendChild(el('p', { class: 'pdc-verse-ref', text: '—— ' + v.ref }));
       grid.appendChild(card);
     });
     frag.appendChild(grid);
@@ -791,6 +822,8 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     page.appendChild(buildDays());
     page.appendChild(hr());
     page.appendChild(buildSermonOverview());
+    page.appendChild(hr());
+    page.appendChild(buildMemoryVerses());
     page.appendChild(hr());
     page.appendChild(buildWorshipOverview());
     ROOT.appendChild(page);
