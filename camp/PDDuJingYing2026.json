@@ -644,26 +644,31 @@
       "label": "敬拜3",
       "day": "4号",
       "time": "10:00 – 10:30",
-      "songs": ["yesuwodeyesu",
-                "chengweinideqimin" ]
+      "songs": [
+        "zheliyourongyao"
+        "yesuwodeyesu",
+        "chengweinideqimin" ]
     },
     {
       "id": "w4",
       "label": "敬拜4",
       "day": "4号",
       "time": "13:30 – 14:00",
-      "songs": ["zainimeiyounanchengdeshi-zanmei",
-"zhaodaowo",
-"jiandanhuxi"]
+      "songs": [
+        "zainimeiyounanchengdeshi-zanmei",
+        "zhaodaowo",
+        "jiandanhuxi"
+      ]
     },
     {
       "id": "w5",
       "label": "敬拜5",
       "day": "5号",
       "time": "10:00 – 10:30",
-      "songs": ["woshenwowang",
-                "zhaodaowo",
-                "gensuinixinyi"
+      "songs": [
+        "woshenwowang",
+        "zhaodaowo",
+        "gensuinixinyi"
 ]
     },
     {
@@ -672,22 +677,30 @@
       "day": "5号",
       "time": "13:30 – 14:00",
       "songs": [               
-"zainimeiyounanchengdeshi-zanmei", 
-"chengweinideqimin"]
+        "zainimeiyounanchengdeshi-zanmei", 
+        "chengweinideqimin"]
     },
     {
       "id": "w7",
       "label": "敬拜7",
       "day": "6号",
       "time": "10:00 – 10:30",
-      "songs": []
+      "songs": [
+        "woxuanzexile",
+        "gensuinixinyi",
+        "chengweiniqimin"
+      ]
     },
     {
       "id": "w8",
       "label": "敬拜8",
       "day": "6号",
       "time": "13:30 – 14:00",
-      "songs": []
+      "songs": [
+        "zheliyourongyao",
+        "zhaodaowo",
+        "meiyitianwoxuyaoni"
+      ]
     }
   ]
 }
