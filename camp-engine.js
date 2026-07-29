@@ -305,7 +305,37 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 .pdc-verse-day{display:inline-flex;align-items:center;gap:6px;font-size:.8em;font-weight:700;color:var(--pdc-gold);background:var(--pdc-gold-soft);border:1px solid var(--pdc-gold-ln);border-radius:999px;padding:2px 11px;margin-bottom:10px}
 .pdc-verse-text{margin:0;padding:12px 16px;border-left:3px solid var(--pdc-gold);background:var(--pdc-gold-soft);border-radius:0 12px 12px 0;font-family:var(--pdc-serif);font-weight:650;line-height:1.9;white-space:pre-line}
 .pdc-verse-ref{margin:9px 2px 0;text-align:right;color:var(--pdc-ink2);font-size:.85em;font-weight:700}
+.pdc-verse-it{margin:9px 0 0;padding:10px 14px;border-left:2px solid var(--pdc-border-md);color:var(--pdc-ink2);font-style:italic;font-size:.86em;line-height:1.7;white-space:pre-line}
 .pdc-verses-empty{color:var(--pdc-ink2);text-align:center;padding:26px 12px;border:1px dashed var(--pdc-border-md);border-radius:16px;margin:0}
+
+/* ── 经文抽选 ── */
+.pdc-draw-open{display:flex;justify-content:center;margin-top:18px}
+.pdc-draw-open button{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:1em;font-weight:800;color:#3a2a00;background:linear-gradient(135deg,#f5d78e,#e0b04e);border:1px solid #e8c877;border-radius:999px;padding:13px 34px;cursor:pointer;box-shadow:0 10px 30px rgba(224,176,78,.35);transition:transform .14s ease,filter .15s}
+.pdc-draw-open button:hover{transform:translateY(-2px);filter:brightness(1.04)}
+.pdc-draw-open button:active{transform:scale(.97)}
+.pdc-draw{position:relative;display:flex;flex-direction:column;gap:16px;background:var(--pdc-bg);border-radius:16px;padding:6px 2px}
+.pdc-draw:fullscreen{padding:5vh clamp(16px,5vw,70px);overflow:auto;justify-content:center}
+.pdc-draw-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pdc-draw-eyebrow{font-family:var(--pdc-serif);font-weight:900;color:var(--pdc-gold);letter-spacing:.18em;font-size:1.02em}
+.pdc-draw-fs{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.85em;font-weight:700;color:var(--pdc-ink2);background:var(--pdc-card);border:1px solid var(--pdc-border-md);border-radius:999px;padding:7px 15px;cursor:pointer;transition:color .15s,border-color .15s}
+.pdc-draw-fs:hover{color:var(--pdc-ink);border-color:var(--pdc-ink3)}
+.pdc-draw-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(min-width:760px){.pdc-draw-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.pdc-draw-card{padding:clamp(14px,2.4vh,24px) 10px;border-radius:16px;text-align:center;font-family:var(--pdc-serif);font-weight:800;font-size:clamp(14px,1.6vw,20px);background:var(--pdc-card);border:1px solid var(--pdc-border);color:var(--pdc-ink2);transition:transform .15s ease,background .15s ease,color .15s ease,border-color .15s ease,box-shadow .15s ease}
+.pdc-draw-card.active{color:#3a2a00;background:linear-gradient(135deg,#f7dfa0,#e0b04e);border-color:#eccf85;transform:scale(1.05);box-shadow:0 0 0 4px var(--pdc-gold-soft),0 14px 30px rgba(224,176,78,.32)}
+.pdc-draw-card.winner{animation:pdc-draw-pulse .85s ease-in-out 2}
+@keyframes pdc-draw-pulse{0%,100%{transform:scale(1.05)}50%{transform:scale(1.12)}}
+.pdc-draw-hint{text-align:center;color:var(--pdc-ink2);font-size:.9em;min-height:22px;margin:0}
+.pdc-draw-go{align-self:center;font:inherit;font-weight:900;font-size:1.08em;color:#3a2a00;background:linear-gradient(135deg,#f5d78e,#e0b04e);border:1px solid #e8c877;border-radius:16px;padding:14px 42px;cursor:pointer;box-shadow:0 12px 32px rgba(224,176,78,.32);transition:transform .14s ease,filter .15s,opacity .15s}
+.pdc-draw-go:hover{transform:translateY(-2px)}
+.pdc-draw-go:active{transform:scale(.97)}
+.pdc-draw-go[disabled]{opacity:.6;cursor:not-allowed;transform:none}
+.pdc-draw-result{display:none;margin:0}
+.pdc-draw-result.show{display:block;animation:pdc-body-in .35s cubic-bezier(.2,.8,.2,1)}
+.pdc-draw-result .pdc-verse-text{font-size:clamp(15px,2vh,19px)}
+.pdc-draw-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:inherit}
+.pdc-draw-piece{position:absolute;top:-22px;width:8px;height:15px;border-radius:3px;animation:pdc-draw-fall 1.7s ease-in forwards}
+@keyframes pdc-draw-fall{to{transform:translateY(105vh) rotate(660deg);opacity:.05}}
 .pdc-questions{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:11px}
 .pdc-questions li{line-height:1.75}
 .pdc-questions li::marker{color:var(--pdc-brand);font-weight:800}
@@ -366,6 +396,7 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
        它们开着时 Esc 让它们自己关（本弹窗不动），与脚本加载顺序无关 */
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape' || !_modal.classList.contains('open')) return;
+      if (document.fullscreenElement) return;   // 全屏时 Esc 先退全屏（浏览器处理）
       var lb = document.getElementById('ym-lb-overlay');
       if (lb && lb.classList.contains('open')) return;
       if (document.querySelector('chord-explorer.open')) return;
@@ -771,7 +802,7 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
   function buildMemoryVerses() {
     var frag = document.createDocumentFragment();
     frag.appendChild(el('h2', { class: 'pdc-sec-title', text: '📜 背诵金句' }));
-    frag.appendChild(el('p', { class: 'pdc-sec-cap', text: '营会期间一起背诵的经文' }));
+    frag.appendChild(el('p', { class: 'pdc-sec-cap', text: '营会期间一起背诵的经文 · 中文或意大利语任选 / Da imparare in cinese o in italiano' }));
     var list = C.memoryVerses || [];
     if (!list.length) {
       frag.appendChild(el('p', { class: 'pdc-verses-empty', text: '金句待公布 🙏' }));
@@ -782,12 +813,165 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
       var card = reveal(div('pdc-verse-card'), i % 4);
       if (v.label) card.appendChild(el('span', { class: 'pdc-verse-day', text: v.label }));
       card.appendChild(el('blockquote', { class: 'pdc-verse-text', text: v.text || '' }));
+      if (v.textIt) card.appendChild(el('p', { class: 'pdc-verse-it', text: v.textIt }));
       if (v.ref) card.appendChild(el('p', { class: 'pdc-verse-ref', text: '—— ' + v.ref }));
       grid.appendChild(card);
     });
     frag.appendChild(grid);
+
+    /* 区末：经文抽选入口（弹窗 + 全屏，适合背经环节投影） */
+    var openWrap = div('pdc-draw-open');
+    var openBtn = el('button', { type: 'button', text: '🎲 经文抽选' });
+    openBtn.addEventListener('click', openVerseDraw);
+    openWrap.appendChild(openBtn);
+    frag.appendChild(openWrap);
     return frag;
   }
+
+  /* ══════════════ 经文抽选（轮盘式随机，经文来自 memoryVerses）══════════════ */
+  var _drawStage = null;   // 当前打开的抽选面板（供空格快捷键判断）
+
+  function buildVerseDraw() {
+    var verses = C.memoryVerses || [];
+    var stage = div('pdc-draw');
+    _drawStage = stage;
+
+    /* 顶栏：状态 + 全屏 */
+    var eyebrow = el('p', { class: 'pdc-draw-eyebrow', text: '全部经文' });
+    var fsBtn = el('button', { class: 'pdc-draw-fs', type: 'button', text: '⛶ 全屏' });
+    fsBtn.addEventListener('click', function () {
+      if (!document.fullscreenElement) {
+        (stage.requestFullscreen || stage.webkitRequestFullscreen || function(){}).call(stage);
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    });
+    stage.appendChild(div('pdc-draw-top', [eyebrow, fsBtn]));
+
+    /* 经文卡片 */
+    var grid = div('pdc-draw-grid');
+    verses.forEach(function (v) {
+      grid.appendChild(el('div', { class: 'pdc-draw-card', text: v.ref || '' }));
+    });
+    stage.appendChild(grid);
+
+    var hint = el('p', { class: 'pdc-draw-hint', text: '点击按钮开始 · 高亮像轮盘一样逐渐减速停下（约 4 秒）' });
+    stage.appendChild(hint);
+
+    /* 抽中后显示经文正文，方便当场背诵 */
+    var result = div('pdc-draw-result');
+    stage.appendChild(result);
+
+    var goBtn = el('button', { class: 'pdc-draw-go', type: 'button', text: '开始抽经文' });
+    stage.appendChild(goBtn);
+
+    var confetti = div('pdc-draw-confetti');
+    stage.appendChild(confetti);
+
+    var drawing = false;
+    var recent = [];   // 最近 2 次结果不重复
+
+    function setActive(i, winner) {
+      Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('active', 'winner'); });
+      var c = grid.children[i];
+      if (c) { c.classList.add('active'); if (winner) c.classList.add('winner'); }
+    }
+
+    function pick(excluded) {
+      var pool = verses.map(function (_, i) { return i; }).filter(function (i) { return excluded.indexOf(i) === -1; });
+      if (!pool.length) pool = verses.map(function (_, i) { return i; });
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function launchConfetti() {
+      confetti.innerHTML = '';
+      var colors = ['#f5d78e', '#e0b04e', '#ffffff', '#b58a2c'];
+      for (var i = 0; i < 36; i++) {
+        var p = div('pdc-draw-piece');
+        p.style.left = (Math.random() * 100) + '%';
+        p.style.background = colors[Math.floor(Math.random() * colors.length)];
+        p.style.animationDelay = (Math.random() * 0.35) + 's';
+        confetti.appendChild(p);
+      }
+      setTimeout(function () { confetti.innerHTML = ''; }, 2300);
+    }
+
+    function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+    /* 轮盘减速路线：随机跳动、间隔由快到慢；结果预先独立决定，动画不影响概率 */
+    function buildPath(finalIndex) {
+      var path = [], last = -1;
+      var steps = 14;
+      for (var s = 0; s < steps; s++) {
+        var progress = s / (steps - 1);
+        var delay = 85 + Math.pow(progress, 2.2) * 190;
+        var next = pick([last]);
+        path.push({ i: next, d: delay });
+        last = next;
+      }
+      var bridge = 1 + Math.floor(Math.random() * 2);
+      for (var b = 0; b < bridge; b++) {
+        var nx = pick([last, finalIndex]);
+        path.push({ i: nx, d: 300 + b * 90 });
+        last = nx;
+      }
+      path.push({ i: finalIndex, d: 470 + bridge * 60 });
+      return path;
+    }
+
+    function showResult(v) {
+      result.innerHTML = '';
+      result.appendChild(el('blockquote', { class: 'pdc-verse-text', text: v.text || '' }));
+      if (v.textIt) result.appendChild(el('p', { class: 'pdc-verse-it', text: v.textIt }));
+      result.appendChild(el('p', { class: 'pdc-verse-ref', text: '—— ' + (v.ref || '') }));
+      result.classList.add('show');
+    }
+
+    stage.__draw = function () {
+      if (drawing || !verses.length) return;
+      drawing = true;
+      goBtn.disabled = true;
+      goBtn.textContent = '抽取中…';
+      eyebrow.textContent = '正在抽取';
+      hint.textContent = '高亮正在逐渐减速…';
+      result.classList.remove('show');
+
+      var finalIndex = pick(recent);
+      var path = buildPath(finalIndex);
+      var run = Promise.resolve();
+      path.forEach(function (step) {
+        run = run.then(function () { setActive(step.i); return sleep(step.d); });
+      });
+      run.then(function () {
+        setActive(finalIndex, true);
+        recent.push(finalIndex);
+        if (recent.length > 2) recent.shift();
+        eyebrow.textContent = '抽中经文';
+        hint.textContent = '请背诵这段经文 🙏（空格键可再抽）';
+        goBtn.textContent = '再次抽取';
+        goBtn.disabled = false;
+        showResult(verses[finalIndex]);
+        launchConfetti();
+        drawing = false;
+      });
+    };
+    goBtn.addEventListener('click', stage.__draw);
+
+    return stage;
+  }
+
+  function openVerseDraw() {
+    openModal('🎲 经文抽选', buildVerseDraw(), { wide: true });
+  }
+
+  /* 空格 = 抽取（仅当抽选弹窗开着时），全局只挂一次 */
+  document.addEventListener('keydown', function (e) {
+    if (e.code !== 'Space') return;
+    if (!_drawStage || !_modal || !_modal.classList.contains('open')) return;
+    if (!_mBody.contains(_drawStage) && !document.fullscreenElement) return;
+    e.preventDefault();
+    _drawStage.__draw();
+  });
 
   /* ══════════════ 总览：敬拜诗歌一览 ══════════════ */
   function buildWorshipOverview() {
