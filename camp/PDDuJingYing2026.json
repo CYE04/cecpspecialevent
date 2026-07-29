@@ -12,39 +12,105 @@
     "parking": "",
     "contact": ""
   },
-  "groups": [],
+  "groups": [
+    {
+      "name": "第一组",
+      "leader": "金紫涵",
+      "members": [
+        "林约瑟",
+        "张路加",
+        "陈王平",
+        "黄Ema",
+        "金Silvia",
+        "陈杰"
+      ]
+    },
+    {
+      "name": "第二组",
+      "leader": "李林丹",
+      "members": [
+        "谢Daniele",
+        "陈颂恩",
+        "吴超凡",
+        "翁沁愉",
+        "季萱",
+        "杨Emma"
+      ]
+    },
+    {
+      "name": "第三组",
+      "leader": "金Elisa",
+      "members": [
+        "金浩然",
+        "戴Dante",
+        "徐博杰",
+        "陈福妙",
+        "张婷情",
+        "金乐意"
+      ]
+    },
+    {
+      "name": "第四组",
+      "leader": "林Steven",
+      "members": [
+        "陈意凯",
+        "林Lucia",
+        "吴恬恬",
+        "陈欣如",
+        "姜雅笑"
+      ]
+    },
+    {
+      "name": "音控",
+      "members": [
+        "陈煜恩",
+        "何正",
+        "倪翰俊",
+        "黄Lorenzo",
+        "林Daniele"
+      ]
+    }
+  ],
   "memoryVerses": [
     {
       "ref": "腓立比书 2:3-8",
-      "text": "3 凡事不可结党，不可贪图虚浮的荣耀，只要存心谦卑，各人看别人比自己强。\n4 各人不要单顾自己的事，也要顾别人的事。\n5 你们当以基督耶稣的心为心。\n6 他本有神的形象，不以自己与神同等为强夺的，\n7 反倒虚己，取了奴仆的形象，成为人的样式；\n8 既有人的样子，就自己卑微，存心顺服以至于死，且死在十字架上。"
+      "text": "3 凡事不可结党，不可贪图虚浮的荣耀，只要存心谦卑，各人看别人比自己强。\n4 各人不要单顾自己的事，也要顾别人的事。\n5 你们当以基督耶稣的心为心。\n6 他本有神的形象，不以自己与神同等为强夺的，\n7 反倒虚己，取了奴仆的形象，成为人的样式；\n8 既有人的样子，就自己卑微，存心顺服以至于死，且死在十字架上。",
+      "textIt": "3 Non fate nulla per spirito di parte o per vanagloria, ma ciascuno, con umiltà, stimi gli altri superiori a se stesso, 4 cercando ciascuno non il proprio interesse, ma anche quello degli altri. 5 Abbiate in voi lo stesso sentimento che è stato anche in Cristo Gesù, 6 il quale, pur essendo in forma di Dio, non considerò l'essere uguale a Dio qualcosa a cui aggrapparsi gelosamente, 7 ma svuotò se stesso, prendendo forma di servo, divenendo simile agli uomini; 8 trovato esteriormente come un uomo, umiliò se stesso, facendosi ubbidiente fino alla morte, e alla morte di croce. (Filippesi 2:3-8)"
     },
     {
       "ref": "罗马书 6:3-5",
-      "text": "3 岂不知我们这受洗归入基督耶稣的人，是受洗归入他的死吗？\n4 所以，我们借着洗礼归入死，和他一同埋葬，原是叫我们一举一动有新生的样式，像基督借着父的荣耀从死里复活一样。\n5 我们若在他死的形状上与他联合，也要在他复活的形状上与他联合。"
+      "text": "3 岂不知我们这受洗归入基督耶稣的人，是受洗归入他的死吗？\n4 所以，我们借着洗礼归入死，和他一同埋葬，原是叫我们一举一动有新生的样式，像基督借着父的荣耀从死里复活一样。\n5 我们若在他死的形状上与他联合，也要在他复活的形状上与他联合。",
+      "textIt": "3 O ignorate forse che tutti noi, che siamo stati battezzati in Cristo Gesù, siamo stati battezzati nella sua morte? 4 Siamo dunque stati sepolti con lui mediante il battesimo nella sua morte, affinché, come Cristo è stato risuscitato dai morti mediante la gloria del Padre, così anche noi camminassimo in novità di vita. 5 Perché se siamo stati totalmente uniti a lui in una morte simile alla sua, lo saremo anche in una risurrezione simile alla sua. (Romani 6:3-5)"
     },
     {
       "ref": "罗马书 12:1-2",
-      "text": "1 所以弟兄们，我以神的慈悲劝你们，将身体献上，当作活祭，是圣洁的，是神所喜悦的。你们如此事奉，乃是理所当然的。\n2 不要效法这个世界。只要心意更新而变化，叫你们察验何为神的善良、纯全、可喜悦的旨意。"
+      "text": "1 所以弟兄们，我以神的慈悲劝你们，将身体献上，当作活祭，是圣洁的，是神所喜悦的。你们如此事奉，乃是理所当然的。\n2 不要效法这个世界。只要心意更新而变化，叫你们察验何为神的善良、纯全、可喜悦的旨意。",
+      "textIt": "La consacrazione a Dio\n1 Vi esorto dunque, fratelli, per la misericordia di Dio, a presentare i vostri corpi in sacrificio vivente, santo, gradito a Dio; questo è il vostro culto spirituale. 2 Non conformatevi a questo mondo, ma siate trasformati mediante il rinnovamento della vostra mente, affinché conosciate per esperienza quale sia la volontà di Dio, la buona, gradita e perfetta volontà. (Romani 12:1-2)"
     },
     {
       "ref": "以弗所书 4:31-32",
-      "text": "31 一切苦毒、恼恨、愤怒、嚷闹、毁谤，并一切的恶毒，都当从你们中间除掉；\n32 并要以恩慈相待，存怜悯的心，彼此饶恕，正如神在基督里饶恕了你们一样。"
+      "text": "31 一切苦毒、恼恨、愤怒、嚷闹、毁谤，并一切的恶毒，都当从你们中间除掉；\n32 并要以恩慈相待，存怜悯的心，彼此饶恕，正如神在基督里饶恕了你们一样。",
+      "textIt": "31 Via da voi ogni amarezza, ogni cruccio e ira e clamore e parola offensiva con ogni sorta di cattiveria! 32 Siate invece benevoli e misericordiosi gli uni verso gli altri, perdonandovi a vicenda come anche Dio vi ha perdonati in Cristo. (Efesini 4:31-32)"
     },
     {
       "ref": "马太福音 11:28-30",
-      "text": "28 凡劳苦担重担的人，可以到我这里来，我就使你们得安息。\n29 我心里柔和谦卑，你们当负我的轭，学我的样式，这样你们心里就必得享安息。\n30 因为我的轭是容易的，我的担子是轻省的。"
+      "text": "28 凡劳苦担重担的人，可以到我这里来，我就使你们得安息。\n29 我心里柔和谦卑，你们当负我的轭，学我的样式，这样你们心里就必得享安息。\n30 因为我的轭是容易的，我的担子是轻省的。",
+      "textIt": "28 Venite a me, voi tutti che siete affaticati e oppressi, e io vi darò riposo. 29 Prendete su di voi il mio giogo e imparate da me, perché io sono mansueto e umile di cuore; e voi troverete riposo per le anime vostre; 30 poiché il mio giogo è dolce e il mio carico è leggero. (Matteo 11:28-30)"
     },
     {
       "ref": "马太福音 28:19-20",
-      "text": "19 所以你们要去，使万民做我的门徒，奉父、子、圣灵的名给他们施洗，\n20 凡我所吩咐你们的，都教训他们遵守。我就常与你们同在，直到世界的末了。"
+      "text": "19 所以你们要去，使万民做我的门徒，奉父、子、圣灵的名给他们施洗，\n20 凡我所吩咐你们的，都教训他们遵守。我就常与你们同在，直到世界的末了。",
+      "textIt": "19 Andate dunque e fate miei discepoli tutti i popoli battezzandoli nel nome del Padre, del Figlio e dello Spirito Santo, 20 insegnando loro a osservare tutte quante le cose che vi ho comandate. Ed ecco, io sono con voi tutti i giorni, sino alla fine dell'età presente. (Matteo 28:19-20)"
     },
     {
       "ref": "约翰福音 19:30",
-      "text": "30 耶稣尝了那醋，就说：“成了！”便低下头，将灵魂交付神了。"
+      "text": "30 耶稣尝了那醋，就说：“成了！”便低下头，将灵魂交付神了。",
+      "textIt": "Quando Gesù ebbe preso l'aceto, disse: «È compiuto!» E chinato il capo rese lo spirito. (Giovanni 19:30)"
     },
     {
       "ref": "哥林多前书 4:1-2",
-      "text": "1 人应当以我们为基督的执事，为神奥秘事的管家。\n2 所求于管家的，是要他有忠心。"
+      "text": "1 人应当以我们为基督的执事，为神奥秘事的管家。\n2 所求于管家的，是要他有忠心。",
+      "textIt": "1 Così ognuno ci consideri servitori di Cristo e amministratori dei misteri di Dio. 2 Del resto, quel che si richiede agli amministratori è che ciascuno sia trovato fedele. (1 Corinzi 4:1-2)"
     }
   ],
   "days": [
@@ -113,7 +179,7 @@
         },
         {
           "time": "16:00 – 16:30",
-          "event": "全体祷告",
+          "event": "全体祷告（吴恬恬）",
           "emoji": "🙏"
         },
         {
@@ -209,8 +275,8 @@
         },
         {
           "time": "16:00 – 16:30",
-          "event": "全体祷告",
-          "emoji": "🙏"
+          "event": "小组报告",
+          "emoji": "📝"
         },
         {
           "time": "16:30 – 17:00",
@@ -233,7 +299,7 @@
         },
         {
           "time": "19:00 – 21:00",
-          "event": "采访",
+          "event": "采访（吴超凡）",
           "emoji": "🎤"
         },
         {
@@ -305,7 +371,7 @@
         },
         {
           "time": "16:00 – 16:30",
-          "event": "全体祷告",
+          "event": "全体祷告（吴恬恬）",
           "emoji": "🙏"
         },
         {
@@ -396,8 +462,8 @@
         },
         {
           "time": "16:30 – 17:00",
-          "event": "散会",
-          "emoji": "🙏"
+          "event": "回家",
+          "emoji": "🏠"
         }
       ]
     }
