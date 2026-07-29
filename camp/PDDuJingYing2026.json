@@ -39,20 +39,12 @@
       "text": "19 所以你们要去，使万民做我的门徒，奉父、子、圣灵的名给他们施洗，\n20 凡我所吩咐你们的，都教训他们遵守。我就常与你们同在，直到世界的末了。"
     },
     {
-      "ref": "马可福音 1:40-42",
-      "text": "40 有一个长大麻风的来求耶稣，向他跪下，说：“你若肯，必能叫我洁净了。”\n41 耶稣动了慈心，就伸手摸他，说：“我肯，你洁净了吧！”\n42 大麻风即时离开他，他就洁净了。"
-    },
-    {
       "ref": "约翰福音 19:30",
       "text": "30 耶稣尝了那醋，就说：“成了！”便低下头，将灵魂交付神了。"
     },
     {
       "ref": "哥林多前书 4:1-2",
       "text": "1 人应当以我们为基督的执事，为神奥秘事的管家。\n2 所求于管家的，是要他有忠心。"
-    },
-    {
-      "ref": "约翰福音 2:13-14、17",
-      "text": "13 犹太人的逾越节近了，耶稣就上耶路撒冷去。\n14 看见殿里有卖牛、羊、鸽子的，并有兑换银钱的人坐在那里。\n17 他的门徒就想起经上记着说：“我为你的殿心里焦急，如同火烧。”"
     }
   ],
   "days": [
@@ -121,8 +113,8 @@
         },
         {
           "time": "16:00 – 16:30",
-          "event": "小组报告",
-          "emoji": "📝"
+          "event": "全体祷告",
+          "emoji": "🙏"
         },
         {
           "time": "16:30 – 17:00",
@@ -217,8 +209,8 @@
         },
         {
           "time": "16:00 – 16:30",
-          "event": "小组报告",
-          "emoji": "📝"
+          "event": "全体祷告",
+          "emoji": "🙏"
         },
         {
           "time": "16:30 – 17:00",
@@ -313,8 +305,8 @@
         },
         {
           "time": "16:00 – 16:30",
-          "event": "小组报告",
-          "emoji": "📝"
+          "event": "全体祷告",
+          "emoji": "🙏"
         },
         {
           "time": "16:30 – 17:00",
@@ -623,8 +615,8 @@
       "day": "3号",
       "time": "10:30 – 11:00",
       "songs": [
-        "woshenwowang", 
-        "ruluqiekemuxishui", 
+        "woshenwowang",
+        "ruluqiekemuxishui",
         "meiyitianwoxuyaoni"
       ]
     },
@@ -634,8 +626,8 @@
       "day": "3号",
       "time": "13:30 – 14:00",
       "songs": [
-        "woxuanzexile", 
-        "gensuinixinyi", 
+        "woxuanzexile",
+        "gensuinixinyi",
         "zhuzainilimian"
       ]
     },
@@ -647,7 +639,8 @@
       "songs": [
         "zheliyourongyao",
         "yesuwodeyesu",
-        "chengweinideqimin" ]
+        "chengweinideqimin"
+      ]
     },
     {
       "id": "w4",
@@ -655,8 +648,8 @@
       "day": "4号",
       "time": "13:30 – 14:00",
       "songs": [
-        "zainimeiyounanchengdeshi-zanmei", 
-        "zhaodaowo", 
+        "zainimeiyounanchengdeshi-zanmei",
+        "zhaodaowo",
         "jiandanhuxi"
       ]
     },
@@ -666,19 +659,19 @@
       "day": "5号",
       "time": "10:00 – 10:30",
       "songs": [
-        "woshenwowang", 
-        "zhaodaowo", 
+        "woshenwowang",
+        "zhaodaowo",
         "gensuinixinyi"
-]
+      ]
     },
     {
       "id": "w6",
       "label": "敬拜6",
       "day": "5号",
       "time": "13:30 – 14:00",
-      "songs": [               
-        "zainimeiyounanchengdeshi-zanmei", 
-        "zhuzainilimian", 
+      "songs": [
+        "zainimeiyounanchengdeshi-zanmei",
+        "zhuzainilimian",
         "chengweinideqimin"
       ]
     },
