@@ -313,10 +313,14 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 .pdc-draw-open button{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:1em;font-weight:800;color:#3a2a00;background:linear-gradient(135deg,#f5d78e,#e0b04e);border:1px solid #e8c877;border-radius:999px;padding:13px 34px;cursor:pointer;box-shadow:0 10px 30px rgba(224,176,78,.35);transition:transform .14s ease,filter .15s}
 .pdc-draw-open button:hover{transform:translateY(-2px);filter:brightness(1.04)}
 .pdc-draw-open button:active{transform:scale(.97)}
-.pdc-draw{position:relative;isolation:isolate;display:flex;flex-direction:column;gap:16px;background:var(--pdc-bg);border-radius:16px;padding:8px 2px;overflow:hidden}
-.pdc-draw::before{content:'';position:absolute;width:380px;height:380px;left:-150px;top:-180px;border-radius:50%;background:radial-gradient(circle,var(--pdc-gold-soft),transparent 62%);filter:blur(8px);z-index:-1;pointer-events:none;animation:pdc-drift 15s ease-in-out infinite alternate}
-.pdc-draw::after{content:'';position:absolute;width:420px;height:420px;right:-170px;bottom:-210px;border-radius:50%;background:radial-gradient(circle,var(--pdc-brand-soft),transparent 62%);filter:blur(8px);z-index:-1;pointer-events:none;animation:pdc-drift 19s ease-in-out infinite alternate-reverse}
-.pdc-draw:fullscreen{padding:5vh clamp(16px,5vw,70px);overflow:auto;justify-content:center}
+/* 舞台本身不裁切（放大的卡片/光环不会被切边）；氛围光斑放进内部裁切层 */
+.pdc-draw{position:relative;isolation:isolate;display:flex;flex-direction:column;gap:16px;background:var(--pdc-bg);border-radius:16px;padding:20px 20px 24px;overflow:visible;
+  --sc-active:1.045;--sc-peak:1.09;--sc-end:1.055}
+@media(max-width:759px){.pdc-draw{--sc-active:1.03;--sc-peak:1.06;--sc-end:1.04}}
+.pdc-draw-bg{position:absolute;inset:0;z-index:-1;overflow:hidden;border-radius:inherit;pointer-events:none}
+.pdc-draw-bg::before{content:'';position:absolute;width:380px;height:380px;left:-150px;top:-180px;border-radius:50%;background:radial-gradient(circle,var(--pdc-gold-soft),transparent 62%);filter:blur(8px);animation:pdc-drift 15s ease-in-out infinite alternate}
+.pdc-draw-bg::after{content:'';position:absolute;width:420px;height:420px;right:-170px;bottom:-210px;border-radius:50%;background:radial-gradient(circle,var(--pdc-brand-soft),transparent 62%);filter:blur(8px);animation:pdc-drift 19s ease-in-out infinite alternate-reverse}
+.pdc-draw:fullscreen{padding:5vh clamp(16px,5vw,70px);overflow:auto;justify-content:center;background:var(--pdc-bg)}
 .pdc-draw-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .pdc-draw-eyebrow{font-family:var(--pdc-serif);font-weight:900;color:var(--pdc-gold);letter-spacing:.18em;font-size:1.02em;display:inline-flex;align-items:center;gap:9px}
 .pdc-draw-eyebrow::before{content:'';width:26px;height:1.5px;background:linear-gradient(90deg,transparent,var(--pdc-gold))}
@@ -325,16 +329,26 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 @keyframes pdc-eyebrow-blink{0%,100%{opacity:1}50%{opacity:.45}}
 .pdc-draw-fs{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:.85em;font-weight:700;color:var(--pdc-ink2);background:var(--pdc-card);border:1px solid var(--pdc-border-md);border-radius:999px;padding:7px 15px;cursor:pointer;transition:color .15s,border-color .15s,transform .12s}
 .pdc-draw-fs:hover{color:var(--pdc-ink);border-color:var(--pdc-ink3);transform:translateY(-1px)}
-.pdc-draw-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-@media(min-width:760px){.pdc-draw-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.pdc-draw-card{position:relative;overflow:hidden;padding:clamp(14px,2.4vh,24px) 10px;border-radius:16px;text-align:center;font-family:var(--pdc-serif);font-weight:800;font-size:clamp(14px,1.6vw,20px);background:var(--pdc-card);border:1px solid var(--pdc-border);color:var(--pdc-ink2);transition:transform .22s cubic-bezier(.2,.8,.2,1),background .3s ease,color .3s ease,border-color .3s ease,box-shadow .3s ease,opacity .4s ease}
-.pdc-draw.rolling .pdc-draw-card:not(.active):not(.trail){opacity:.42;transform:scale(.985)}
-.pdc-draw-card.trail{background:var(--pdc-gold-soft);border-color:var(--pdc-gold-ln);color:var(--pdc-gold)}
-.pdc-draw-card.active{color:#3a2a00;background:linear-gradient(135deg,#f7dfa0,#e0b04e);border-color:#eccf85;transform:scale(1.06);box-shadow:0 0 0 4px var(--pdc-gold-soft),0 16px 34px rgba(224,176,78,.34)}
-.pdc-draw-card.winner{animation:pdc-draw-pulse .9s cubic-bezier(.3,.9,.4,1.2) 2}
-.pdc-draw-card.winner::after{content:'';position:absolute;top:-10%;bottom:-10%;left:-70%;width:55%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-20deg);animation:pdc-draw-shine 1.15s ease .2s 2}
+.pdc-draw-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;perspective:1100px}
+@media(min-width:760px){.pdc-draw-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}}
+/* 卡片：3D 错峰入场；滚动时未命中卡后退变暗（聚光灯） */
+.pdc-draw-card{position:relative;overflow:hidden;padding:clamp(14px,2.4vh,24px) 10px;border-radius:16px;text-align:center;font-family:var(--pdc-serif);font-weight:800;font-size:clamp(14px,1.6vw,20px);background:var(--pdc-card);border:1px solid var(--pdc-border);color:var(--pdc-ink2);transform-style:preserve-3d;will-change:transform;animation:pdc-card-in .58s cubic-bezier(.2,.85,.25,1) both;animation-delay:calc(var(--i,0) * 55ms);transition:transform .22s cubic-bezier(.2,.8,.2,1),background .3s ease,color .3s ease,border-color .3s ease,box-shadow .32s ease,opacity .4s ease,filter .4s ease}
+@keyframes pdc-card-in{from{opacity:0;transform:translateY(18px) rotateX(-14deg) scale(.94)}to{opacity:1;transform:none}}
+.pdc-draw.rolling .pdc-draw-card:not(.active):not(.trail){opacity:.38;transform:scale(.97);filter:saturate(.65)}
+.pdc-draw-card.trail{background:var(--pdc-gold-soft);border-color:var(--pdc-gold-ln);color:var(--pdc-gold);transform:scale(1.01)}
+/* 命中：金色流光渐变 + 每次跳动的弹性 tick */
+.pdc-draw-card.active{color:#3a2a00;border-color:#eccf85;background:linear-gradient(115deg,#f2cf85 8%,#fff0c9 34%,#e8bd63 62%,#f2cf85 92%);background-size:230% 100%;box-shadow:0 0 0 4px var(--pdc-gold-soft),0 18px 38px rgba(224,176,78,.36);transform:scale(var(--sc-active));animation:pdc-card-tick .26s cubic-bezier(.34,1.6,.5,1),pdc-card-flow 1.6s linear infinite}
+@keyframes pdc-card-tick{0%{transform:scale(.99)}55%{transform:scale(var(--sc-peak))}100%{transform:scale(var(--sc-active))}}
+@keyframes pdc-card-flow{from{background-position:150% 0}to{background-position:-80% 0}}
+/* 定格：弹跳 + 双层光环扩散（box-shadow 不占布局）+ 高光扫过 */
+.pdc-draw-card.winner{animation:pdc-draw-pulse 1s cubic-bezier(.34,1.5,.5,1) both,pdc-card-flow 1.6s linear infinite,pdc-draw-halo 1.5s cubic-bezier(.2,.7,.3,1) 2}
+.pdc-draw-card.winner::after{content:'';position:absolute;top:-10%;bottom:-10%;left:-70%;width:55%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);animation:pdc-draw-shine 1.15s ease .18s 2}
 @keyframes pdc-draw-shine{to{left:135%}}
-@keyframes pdc-draw-pulse{0%,100%{transform:scale(1.06)}45%{transform:scale(1.14)}}
+@keyframes pdc-draw-pulse{0%{transform:scale(1.02)}40%{transform:scale(var(--sc-peak))}68%{transform:scale(var(--sc-active))}100%{transform:scale(var(--sc-end))}}
+@keyframes pdc-draw-halo{
+  0%{box-shadow:0 0 0 0 rgba(224,176,78,.55),0 0 0 0 rgba(224,176,78,.35),0 18px 38px rgba(224,176,78,.36)}
+  100%{box-shadow:0 0 0 18px rgba(224,176,78,0),0 0 0 34px rgba(224,176,78,0),0 18px 38px rgba(224,176,78,.28)}
+}
 .pdc-draw-hint{text-align:center;color:var(--pdc-ink2);font-size:.9em;min-height:22px;margin:0;transition:opacity .3s}
 .pdc-draw-go{position:relative;overflow:hidden;align-self:center;font:inherit;font-weight:900;font-size:1.08em;color:#3a2a00;background:linear-gradient(135deg,#f5d78e,#e0b04e);border:1px solid #e8c877;border-radius:16px;padding:14px 42px;cursor:pointer;box-shadow:0 12px 32px rgba(224,176,78,.32);transition:transform .18s cubic-bezier(.2,.8,.2,1),filter .15s,opacity .15s,box-shadow .18s}
 .pdc-draw-go::after{content:'';position:absolute;top:-10%;bottom:-10%;left:-80%;width:50%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:pdc-draw-shine 3.2s ease 1.2s infinite}
@@ -351,9 +365,16 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 .pdc-draw-hide:hover{border-color:var(--pdc-ink3);transform:translateY(-1px)}
 .pdc-draw-hide:active{transform:scale(.95)}
 .pdc-draw-result .pdc-verse-text{font-size:clamp(15px,2vh,19px)}
-.pdc-draw-veil{cursor:default;transition:filter .5s cubic-bezier(.2,.8,.2,1),opacity .5s ease}
-.pdc-draw-result.hidden .pdc-draw-veil{filter:blur(13px) saturate(.8);opacity:.75;user-select:none;cursor:pointer}
-.pdc-draw-result.hidden::after{content:'已隐藏 · 背完点击查看';display:block;text-align:center;color:var(--pdc-ink2);font-size:.85em;margin-top:10px}
+/* 背诵模式：默认模糊，点一下揭晓（对答案） */
+.pdc-draw-veilwrap{position:relative;border-radius:14px}
+.pdc-draw-veil{transition:filter .6s cubic-bezier(.2,.8,.2,1),opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1)}
+.pdc-draw-result.hidden .pdc-draw-veil{filter:blur(15px) saturate(.75);opacity:.6;transform:scale(.99);user-select:none;pointer-events:none}
+.pdc-draw-result.hidden .pdc-draw-veilwrap{cursor:pointer}
+.pdc-draw-veilcue{position:absolute;inset:0;display:none;align-items:center;justify-content:center;pointer-events:none}
+.pdc-draw-result.hidden .pdc-draw-veilcue{display:flex;animation:pdc-cue-in .45s cubic-bezier(.2,.9,.25,1.1) both}
+@keyframes pdc-cue-in{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+.pdc-draw-veilcue span{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:.95em;color:var(--pdc-ink);background:var(--pdc-glass);border:1px solid var(--pdc-border-md);border-radius:999px;padding:10px 22px;box-shadow:var(--pdc-sh);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);animation:pdc-cue-breathe 2.4s ease-in-out infinite}
+@keyframes pdc-cue-breathe{0%,100%{transform:translateY(0);opacity:.95}50%{transform:translateY(-3px);opacity:1}}
 .pdc-draw-confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:inherit;z-index:2}
 .pdc-draw-piece{position:absolute;top:-24px;width:var(--w,8px);height:var(--h,14px);border-radius:3px;opacity:.95;animation:pdc-draw-fall var(--t,1.8s) cubic-bezier(.25,.4,.6,1) forwards}
 @keyframes pdc-draw-fall{55%{opacity:.95}to{transform:translate(var(--sway,0px),108vh) rotate(var(--rot,660deg));opacity:0}}
@@ -856,6 +877,7 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
   function buildVerseDraw() {
     var verses = C.memoryVerses || [];
     var stage = div('pdc-draw');
+    stage.appendChild(div('pdc-draw-bg'));   // 氛围光斑层（自带裁切，舞台本身不裁切）
     _drawStage = stage;
 
     /* 顶栏：状态 + 全屏 */
@@ -872,8 +894,10 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 
     /* 经文卡片 */
     var grid = div('pdc-draw-grid');
-    verses.forEach(function (v) {
-      grid.appendChild(el('div', { class: 'pdc-draw-card', text: v.ref || '' }));
+    verses.forEach(function (v, i) {
+      var card = el('div', { class: 'pdc-draw-card', text: v.ref || '' });
+      card.style.setProperty('--i', i);   // 错峰入场
+      grid.appendChild(card);
     });
     stage.appendChild(grid);
 
@@ -955,29 +979,37 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 
     function showResult(v) {
       result.innerHTML = '';
-      result.classList.remove('hidden');
 
-      /* 头栏：出处徽章 + 隐藏经文（背诵模式）按钮 */
-      var hideBtn = el('button', { class: 'pdc-draw-hide', type: 'button', text: '🙈 隐藏经文' });
+      /* 头栏：出处徽章 + 显示/隐藏经文切换 */
+      var hideBtn = el('button', { class: 'pdc-draw-hide', type: 'button' });
       result.appendChild(div('pdc-draw-result-head', [
         el('span', { class: 'pdc-draw-result-badge', text: '📖 ' + (v.ref || '抽中经文') }),
         hideBtn
       ]));
 
-      /* 正文包一层 veil：背诵模式整体模糊，点它揭晓对答案 */
+      /* 正文默认模糊（背诵模式）：先凭记忆背，点一下揭晓对答案 */
       var veil = div('pdc-draw-veil');
       veil.appendChild(el('blockquote', { class: 'pdc-verse-text', text: v.text || '' }));
       if (v.textIt) veil.appendChild(el('p', { class: 'pdc-verse-it', text: v.textIt }));
-      result.appendChild(veil);
+      var cue = div('pdc-draw-veilcue', [el('span', { text: '👀 背完点这里对答案' })]);
+      var wrap = div('pdc-draw-veilwrap', [veil, cue]);
+      result.appendChild(wrap);
 
       function setVeiled(on) {
         result.classList.toggle('hidden', on);
-        hideBtn.textContent = on ? '👁 显示经文' : '🙈 隐藏经文';
-        hint.textContent = on ? '凭记忆背诵，背完点经文区域对答案 ✅' : '请背诵这段经文 🙏（空格键可再抽）';
+        hideBtn.textContent = on ? '👀 显示经文' : '🙈 隐藏经文';
+        hint.textContent = on
+          ? '经文已隐藏 · 凭记忆背诵，背完点一下对答案 ✅'
+          : '请背诵这段经文 🙏（空格键可再抽）';
       }
-      hideBtn.addEventListener('click', function () { setVeiled(!result.classList.contains('hidden')); });
-      veil.addEventListener('click', function () { if (result.classList.contains('hidden')) setVeiled(false); });
+      wrap.addEventListener('click', function () {
+        if (result.classList.contains('hidden')) setVeiled(false);
+      });
+      hideBtn.addEventListener('click', function () {
+        setVeiled(!result.classList.contains('hidden'));
+      });
 
+      setVeiled(true);          // 默认隐藏
       result.classList.add('show');
     }
 
