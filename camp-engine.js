@@ -340,6 +340,13 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 .pdc-draw-card.active{color:#3a2a00;border-color:#eccf85;background:linear-gradient(115deg,#f2cf85 8%,#fff0c9 34%,#e8bd63 62%,#f2cf85 92%);background-size:230% 100%;box-shadow:0 0 0 4px var(--pdc-gold-soft),0 18px 38px rgba(224,176,78,.36);transform:scale(var(--sc-active));animation:pdc-card-tick .26s cubic-bezier(.34,1.6,.5,1),pdc-card-flow 1.6s linear infinite}
 @keyframes pdc-card-tick{0%{transform:scale(.99)}55%{transform:scale(var(--sc-peak))}100%{transform:scale(var(--sc-active))}}
 @keyframes pdc-card-flow{from{background-position:150% 0}to{background-position:-80% 0}}
+/* 假定格彩蛋：看起来真的停住了——流光停下、稳在定格尺寸、光晕加重（须排在 .active 之后覆盖其 animation） */
+.pdc-draw-card.settle{background-position:0 0;box-shadow:0 0 0 5px var(--pdc-gold-soft),0 22px 44px rgba(224,176,78,.42);animation:pdc-card-settle .36s cubic-bezier(.25,1.45,.5,1) both}
+@keyframes pdc-card-settle{0%{transform:scale(var(--sc-peak))}100%{transform:scale(var(--sc-end))}}
+.pdc-draw.settled .pdc-draw-eyebrow{animation:none}
+/* 反转：从假定格跳走时整排轻微抖一下 */
+.pdc-draw.jolt .pdc-draw-grid{animation:pdc-jolt .3s cubic-bezier(.36,.07,.19,.97)}
+@keyframes pdc-jolt{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(3px)}50%{transform:translateX(-3px)}}
 /* 定格：弹跳 + 双层光环扩散（box-shadow 不占布局）+ 高光扫过 */
 .pdc-draw-card.winner{animation:pdc-draw-pulse 1s cubic-bezier(.34,1.5,.5,1) both,pdc-card-flow 1.6s linear infinite,pdc-draw-halo 1.5s cubic-bezier(.2,.7,.3,1) 2}
 .pdc-draw-card.winner::after{content:'';position:absolute;top:-10%;bottom:-10%;left:-70%;width:55%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.75),transparent);transform:skewX(-20deg);animation:pdc-draw-shine 1.15s ease .18s 2}
@@ -915,24 +922,69 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     stage.appendChild(confetti);
 
     var drawing = false;
-    var recent = [];   // 最近 2 次结果不重复
+    var recent = [];        // 最近 2 次结果不重复
+    var lastTeased = false; // 上一次是否演了假定格（防止连续两次）
+
+    /* 最短 / 最长的一段（本届即 约翰福音19:30 / 腓立比书2:3-8）——按字数自动取，换经文也不用改代码：
+       最短的用作「假定格」彩蛋；最长的（最难背）抽中概率调高一点点。 */
+    var LONGEST_WEIGHT = 1.4;   // 最长那段的权重（其余为 1）：8 段时实际约 14%，其余约 12.3%
+    var TEASE_CHANCE = 0.5;     // 假定格触发概率（因「不连续两次」+「抽中该段时不演」，实际约 30%）
+    var teaserIndex = -1, longestIndex = -1;
+    (function () {
+      var min = Infinity, max = -1;
+      verses.forEach(function (v, i) {
+        var n = (v.text || '').length;
+        if (!n) return;
+        if (n < min) { min = n; teaserIndex = i; }
+        if (n > max) { max = n; longestIndex = i; }
+      });
+    })();
+
+    /* 每段的抽中权重：JSON 里写 "weight": 1.4 即可单独调高某段（不写就用默认，
+       默认 = 最长那段 LONGEST_WEIGHT、其余 1）。改权重不用动代码。 */
+    var weights = verses.map(function (v, i) {
+      var w = Number(v.weight);
+      if (isFinite(w) && w > 0) return w;
+      return i === longestIndex ? LONGEST_WEIGHT : 1;
+    });
 
     var lastActive = -1;
-    function setActive(i, winner) {
-      Array.prototype.forEach.call(grid.children, function (c) { c.classList.remove('active', 'winner', 'trail'); });
+    function setActive(i, mode) {   // mode: 'winner' | 'settle' | undefined
+      Array.prototype.forEach.call(grid.children, function (c) {
+        c.classList.remove('active', 'winner', 'trail', 'settle');
+      });
       /* 拖尾：上一张卡短暂保留金色余晖，滚动更有轮盘感（定格时清掉） */
-      if (!winner && lastActive >= 0 && lastActive !== i && grid.children[lastActive]) {
+      if (mode !== 'winner' && lastActive >= 0 && lastActive !== i && grid.children[lastActive]) {
         grid.children[lastActive].classList.add('trail');
       }
       var c = grid.children[i];
-      if (c) { c.classList.add('active'); if (winner) c.classList.add('winner'); }
+      if (c) {
+        c.classList.add('active');
+        if (mode === 'winner') c.classList.add('winner');
+        else if (mode === 'settle') c.classList.add('settle');
+      }
       lastActive = i;
     }
 
+    /* 均匀随机：只用于动画路线上的乱跳 */
     function pick(excluded) {
       var pool = verses.map(function (_, i) { return i; }).filter(function (i) { return excluded.indexOf(i) === -1; });
       if (!pool.length) pool = verses.map(function (_, i) { return i; });
       return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    /* 抽真正的结果：按 weights 加权（最长/指定的段概率高一点点），其余等概率 */
+    function pickWinner(excluded) {
+      var pool = verses.map(function (_, i) { return i; }).filter(function (i) { return excluded.indexOf(i) === -1; });
+      if (!pool.length) pool = verses.map(function (_, i) { return i; });
+      var w = pool.map(function (i) { return weights[i]; });
+      var total = w.reduce(function (a, b) { return a + b; }, 0);
+      var r = Math.random() * total;
+      for (var k = 0; k < pool.length; k++) {
+        r -= w[k];
+        if (r < 0) return pool[k];
+      }
+      return pool[pool.length - 1];
     }
 
     function launchConfetti() {
@@ -956,7 +1008,9 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
 
     function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
-    /* 轮盘减速路线：随机跳动、间隔由快到慢；结果预先独立决定，动画不影响概率 */
+    /* 轮盘减速路线：随机跳动、间隔由快到慢。
+       结果（finalIndex）在调用本函数之前就已独立随机决定，本函数只排演出路线，
+       因此「假定格」彩蛋完全不影响任何一段经文被抽中的概率。 */
     function buildPath(finalIndex) {
       var path = [], last = -1;
       var steps = 14;
@@ -967,14 +1021,26 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
         path.push({ i: next, d: delay });
         last = next;
       }
+      /* 假定格彩蛋：TEASE_CHANCE 概率触发，且不会连续两次（看多了会腻）；
+         真正抽中最短那段时不演，否则会「停两次」很怪 */
+      var useTeaser = teaserIndex >= 0 && finalIndex !== teaserIndex && verses.length > 2
+        && !lastTeased && Math.random() < TEASE_CHANCE;
+
       var bridge = 1 + Math.floor(Math.random() * 2);
       for (var b = 0; b < bridge; b++) {
-        var nx = pick([last, finalIndex]);
+        /* 桥接步排除彩蛋那段，保证紧接着「跳」进假定格，不会看起来停两下 */
+        var nx = pick(useTeaser ? [last, finalIndex, teaserIndex] : [last, finalIndex]);
         path.push({ i: nx, d: 300 + b * 90 });
         last = nx;
       }
-      path.push({ i: finalIndex, d: 470 + bridge * 60 });
-      return path;
+
+      if (useTeaser) {
+        /* 假定格：稳稳停在最短的一段 0.8 秒（大家以为中了大彩蛋），再跳到真正抽中的那段 */
+        path.push({ i: teaserIndex, d: 820, settle: true });
+      } else {
+        path.push({ i: finalIndex, d: 470 + bridge * 60 });
+      }
+      return { path: path, teased: useTeaser };
     }
 
     function showResult(v) {
@@ -1023,15 +1089,24 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
       hint.textContent = '高亮正在逐渐减速…';
       result.classList.remove('show');
 
-      var finalIndex = pick(recent);
-      var path = buildPath(finalIndex);
+      var finalIndex = pickWinner(recent);    // ← 结果在此独立决定，之后的演出不改变它
+      var plan = buildPath(finalIndex);
+      lastTeased = plan.teased;
       var run = Promise.resolve();
-      path.forEach(function (step) {
-        run = run.then(function () { setActive(step.i); return sleep(step.d); });
+      plan.path.forEach(function (step) {
+        run = run.then(function () {
+          if (step.settle) stage.classList.add('settled');   // 假定格：连标题闪烁也停下，看着像真停了
+          setActive(step.i, step.settle ? 'settle' : undefined);
+          return sleep(step.d);
+        });
       });
       run.then(function () {
-        stage.classList.remove('rolling');
-        setActive(finalIndex, true);
+        stage.classList.remove('rolling', 'settled');
+        if (plan.teased) {                                    // 反转：抖一下再跳到真正抽中的
+          stage.classList.add('jolt');
+          setTimeout(function () { stage.classList.remove('jolt'); }, 320);
+        }
+        setActive(finalIndex, 'winner');
         recent.push(finalIndex);
         if (recent.length > 2) recent.shift();
         eyebrow.textContent = '抽中经文';
