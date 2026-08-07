@@ -151,6 +151,20 @@ window.CampEngine = {};
 .pdc-info b{color:var(--pdc-ink)}
 .pdc-info>div{margin:7px 0;line-height:1.8}
 
+/* ── 营会照片 ── */
+.pdc-album{display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;background:linear-gradient(135deg,var(--pdc-brand-soft),var(--pdc-gold-soft) 70%,transparent),var(--pdc-card);border:1px solid var(--pdc-border);border-radius:20px;box-shadow:var(--pdc-sh);padding:18px 22px;transition:transform .16s cubic-bezier(.2,.8,.2,1),box-shadow .18s ease,border-color .18s ease}
+.pdc-album:hover{transform:translateY(-3px);box-shadow:var(--pdc-sh-lg);border-color:var(--pdc-border-md)}
+.pdc-album:active{transform:scale(.99)}
+.pdc-album-icon{flex-shrink:0;width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--pdc-card);border:1px solid var(--pdc-border-md);box-shadow:var(--pdc-sh)}
+.pdc-album-main{flex:1;min-width:0}
+.pdc-album-title{font-family:var(--pdc-serif);font-weight:800;font-size:1.06em;margin:0 0 3px}
+.pdc-album-sub{margin:0;font-size:.86em;color:var(--pdc-ink2)}
+.pdc-album-go{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-size:.88em;font-weight:750;color:var(--pdc-brand);background:var(--pdc-brand-soft);border:1px solid var(--pdc-brand-ln);border-radius:999px;padding:8px 16px;white-space:nowrap}
+@media(max-width:560px){
+  .pdc-album{flex-wrap:wrap;gap:12px;padding:16px}
+  .pdc-album-go{width:100%;justify-content:center}
+}
+
 /* ── Section title ── */
 .pdc-sec-title{font-family:var(--pdc-serif);font-size:1.35em;font-weight:800;margin:0 0 6px;display:flex;align-items:center;gap:9px}
 .pdc-sec-cap{font-size:.85em;color:var(--pdc-ink2);margin:0 0 18px}
@@ -647,6 +661,28 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
       hero.appendChild(box);
     }
     return hero;
+  }
+
+  /* ══════════════ 营会照片（photos 没填就整段不显示）══════════════ */
+  function buildPhotos() {
+    var p = C.photos || {};
+    if (typeof p === 'string') p = { url: p };
+    if (!p.url) return null;
+
+    var frag = document.createDocumentFragment();
+    frag.appendChild(el('h2', { class: 'pdc-sec-title', text: '📸 营会照片' }));
+
+    var card = el('a', {
+      class: 'pdc-album', href: p.url, target: '_blank', rel: 'noopener noreferrer'
+    });
+    card.appendChild(el('span', { class: 'pdc-album-icon', text: '🖼️' }));
+    card.appendChild(div('pdc-album-main', [
+      el('p', { class: 'pdc-album-title', text: p.label || '四天精彩瞬间' }),
+      el('p', { class: 'pdc-album-sub', text: p.note || '点击查看 / 下载营会相册' })
+    ]));
+    card.appendChild(el('span', { class: 'pdc-album-go', text: '打开相册 ›' }));
+    frag.appendChild(reveal(card, 0));
+    return frag;
   }
 
   /* ══════════════ 整体时间表（四天一览）══════════════ */
@@ -1164,6 +1200,8 @@ html.pdc-lock,html.pdc-lock body{overflow:hidden!important}
     var page = div('pdc-page');
     page.appendChild(buildHero());
     page.appendChild(hr());
+    var photos = buildPhotos();
+    if (photos) { page.appendChild(photos); page.appendChild(hr()); }
     page.appendChild(buildTimetable());
     page.appendChild(hr());
     page.appendChild(buildDays());
